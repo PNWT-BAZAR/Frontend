@@ -17,6 +17,7 @@ import OrdersList from "./Pages/Admin/OrdersList";
 import ProductView from "./Pages/Product/ProductView";
 import Home from "./Pages/Home/Home";
 import CategoryView from "./Pages/Category/CategoryView";
+import CategoriesAndSubcategoriesList from "./Pages/Admin/CategoriesAndSubcategoriesList";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -117,6 +118,14 @@ root.render(
             element={
               <AdminLayout>
                 <OrdersList />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/categories"
+            element={
+              <AdminLayout>
+                <CategoriesAndSubcategoriesList />
               </AdminLayout>
             }
           />

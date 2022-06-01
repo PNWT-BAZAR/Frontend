@@ -19,6 +19,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import ClassOutlinedIcon from "@mui/icons-material/ClassOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 
 const AdminDrawer = (props) => {
   const drawerWidth = "20vw";
@@ -84,6 +85,18 @@ const AdminDrawer = (props) => {
                 <ListItemText
                   primary="Orders"
                   secondary="View and manage orders."
+                />
+              </ListItemButton>
+            </StyledLink>
+
+            <StyledLink to={"/admin/categories"}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <CategoryOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Categories and Subcategories"
+                  secondary="View and manage categories and subcategories of products."
                 />
               </ListItemButton>
             </StyledLink>

@@ -20,10 +20,6 @@ const ProductsList = () => {
   const handleRowClick = (param, event) => {
     console.log(param.id);
     navigate(`/admin/products/${param.id}`);
-    // navigate({
-    //   pathname: "/admin/products/",
-    //   search: `?${createSearchParams({ id: param.id })}`,
-    // });
   };
 
   return (
