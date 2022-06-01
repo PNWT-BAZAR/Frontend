@@ -27,4 +27,12 @@ export const dummySubcategories = [
     id: 7,
     name: "Desk",
   },
+  {
+    id: 8,
+    name: "Bar stool",
+  },
+  {
+    id: 9,
+    name: "Lamp",
+  },
 ];

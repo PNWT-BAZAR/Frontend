@@ -1,8 +1,9 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import { dummyOrders } from "../../sampleItems/dummyOrders";
-import StyledLink from "../Layout/StyledLink";
 
 const columns = [
   { field: "id", headerName: "ID", width: 100 },
@@ -12,14 +13,27 @@ const columns = [
   { field: "orderStatus", headerName: "Status", width: 150 },
 ];
 
-const ProductsList = () => {
+const OrdersList = () => {
+  let navigate = useNavigate();
+
+  const handleRowClick = (param, event) => {
+    console.log(param.id);
+    navigate(`/admin/orders/${param.id}`);
+  };
+
   return (
     <Box>
       <Box style={{ height: "70vh", width: "100%" }}>
-        <DataGrid rows={dummyOrders} columns={columns} autoPageSize={true} />
+        <DataGrid
+          rows={dummyOrders}
+          columns={columns}
+          autoPageSize={true}
+          rowSelection={"single"}
+          onRowClick={handleRowClick}
+        />
       </Box>
     </Box>
   );
 };
 
-export default ProductsList;
+export default OrdersList;

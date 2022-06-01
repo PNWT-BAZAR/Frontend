@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { dummyCategories } from "../../sampleItems/dummyCategories";
 import { dummySubcategories } from "../../sampleItems/dummySubcategories";
+import { dummyProducts } from "../../sampleItems/dummyProducts";
 
 import {
   Box,
@@ -28,12 +29,18 @@ import EuroIcon from "@mui/icons-material/Euro";
 const AddProduct = (props) => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState(null);
-  const [subcategory, setSubcategory] = useState(null);
-  const [quantity, setQuantity] = useState(0);
-  const [price, setPrice] = useState(0);
-  const [description, setDescription] = useState("");
+  const productId =
+    window.location.pathname.substring(
+      window.location.pathname.lastIndexOf("/") + 1
+    ) - 1;
+  const product = dummyProducts[productId];
+
+  const [name, setName] = useState(product?.name);
+  const [category, setCategory] = useState(product?.category);
+  const [subcategory, setSubcategory] = useState(product?.subcategory);
+  const [quantity, setQuantity] = useState(product?.quantity);
+  const [price, setPrice] = useState(product?.price);
+  const [description, setDescription] = useState(product?.description);
 
   const [open, setOpen] = React.useState(false);
 
@@ -59,8 +66,6 @@ const AddProduct = (props) => {
       }}
     >
       <FormControl
-        value={name}
-        onChange={(e) => setName(e.target.value)}
         sx={{
           m: 1,
           width: { xs: "50ch", sm: "102ch" },
@@ -69,6 +74,8 @@ const AddProduct = (props) => {
       >
         <InputLabel>Product name</InputLabel>
         <OutlinedInput
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           startAdornment={
             <InputAdornment position="start">
               <ChairOutlinedIcon />
@@ -105,7 +112,7 @@ const AddProduct = (props) => {
         </FormControl>
 
         <FormControl sx={{ m: 1, width: "50ch" }}>
-          <InputLabel>Subategory</InputLabel>
+          <InputLabel>Subcategory</InputLabel>
           <Select
             value={subcategory}
             onChange={(e) => setSubcategory(e.target.value)}
@@ -145,9 +152,7 @@ const AddProduct = (props) => {
               </InputAdornment>
             ),
           }}
-        >
-          <OutlinedInput />
-        </TextField>
+        ></TextField>
 
         <TextField
           type="number"
@@ -162,9 +167,7 @@ const AddProduct = (props) => {
               </InputAdornment>
             ),
           }}
-        >
-          <OutlinedInput />
-        </TextField>
+        ></TextField>
       </Box>
 
       <label
@@ -215,6 +218,17 @@ const AddProduct = (props) => {
               <DescriptionOutlinedIcon />
             </InputAdornment>
           ),
+        }}
+      />
+      <TextField
+        label="Product review score"
+        defaultValue={product?.reviewScore || "No reviews yet!"}
+        InputProps={{
+          readOnly: true,
+        }}
+        sx={{
+          marginTop: 2,
+          width: { xs: "25ch", sm: "25ch" },
         }}
       />
       <Box

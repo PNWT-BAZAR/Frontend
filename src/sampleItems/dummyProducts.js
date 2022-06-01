@@ -7,6 +7,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/7728.jpg",
     quantity: 4,
     price: 100,
+    category: "Living room",
+    subcategory: "Coffee table",
     reviewScore: 4.5,
   },
   {
@@ -17,6 +19,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/8891.jpg",
     quantity: 15,
     price: 175,
+    category: "Dining room",
+    subcategory: "Chair",
     reviewScore: 4.5,
   },
   {
@@ -27,6 +31,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/8777c.jpg",
     quantity: 15,
     price: 250,
+    category: "Dining room",
+    subcategory: "Dining table",
     reviewScore: 3.5,
   },
   {
@@ -37,6 +43,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/8047.jpg",
     quantity: 13,
     price: 125,
+    category: "Living room",
+    subcategory: "Sofa",
     reviewScore: 5,
   },
   {
@@ -47,6 +55,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/large/7710.jpg",
     quantity: 14,
     price: 300,
+    category: "Living room",
+    subcategory: "Sofa",
     reviewScore: 5,
   },
   {
@@ -57,6 +67,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/9126.jpg",
     quantity: 4,
     price: 250,
+    category: "Dining room",
+    subcategory: "Bar stool",
     reviewScore: 3.5,
   },
   {
@@ -67,6 +79,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/8960.jpg",
     quantity: 12,
     price: 159,
+    category: "Living room",
+    subcategory: "Lamp",
     reviewScore: 4,
   },
   {
@@ -77,6 +91,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/7682.jpg",
     quantity: 10,
     price: 210,
+    category: "Dining room",
+    subcategory: "Chair",
     reviewScore: 5,
   },
   {
@@ -87,6 +103,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/7683.jpg",
     quantity: 10,
     price: 210,
+    category: "Dining room",
+    subcategory: "Chair",
     reviewScore: 5,
   },
   {
@@ -97,6 +115,8 @@ export const dummyProducts = [
     url: "https://www.woods-furniture.co.uk/images/products/standard/8037.jpg",
     quantity: 10,
     price: 550,
+    category: "Living room",
+    subcategory: "Sofa",
     reviewScore: 5,
   },
 ];

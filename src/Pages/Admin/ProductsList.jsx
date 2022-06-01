@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate, createSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@mui/material";
 import { dummyProducts } from "../../sampleItems/dummyProducts.js";
 import StyledLink from "../Layout/StyledLink";

@@ -21,11 +21,14 @@ import { dummyProducts } from "../../sampleItems/dummyProducts";
 import { ProductCard } from "../Home/ProductCard";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useNavigate } from "react-router-dom";
 import Layout from "../Layout/Layout";
 
 const drawerWidth = 240;
 
 export default function CategoryView() {
+  const navigate = useNavigate();
+
   const categoryId =
     window.location.pathname.substring(
       window.location.pathname.lastIndexOf("/") + 1
@@ -84,7 +87,13 @@ export default function CategoryView() {
           }}
         >
           {dummyProducts?.map((prod) => {
-            return <ProductCard key={prod?.id} product={prod} />;
+            return (
+              <ProductCard
+                key={prod?.id}
+                product={prod}
+                onClick={() => navigate(`/product/${prod.id}`)}
+              />
+            );
           })}
         </Box>
       </div>
