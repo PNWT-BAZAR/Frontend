@@ -19,6 +19,7 @@ import Home from "./Pages/Home/Home";
 import CategoryView from "./Pages/Category/CategoryView";
 import CategoriesAndSubcategoriesList from "./Pages/Admin/CategoriesAndSubcategoriesList";
 import OrderView from "./Pages/Admin/OrderView";
+import NewLogin from "./Pages/LoginAndRegister/NewLogin";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -39,6 +40,14 @@ root.render(
             element={
               <Layout>
                 <ProductView />
+              </Layout>
+            }
+          />
+          <Route
+            path="/form"
+            element={
+              <Layout>
+                <NewLogin />
               </Layout>
             }
           />
