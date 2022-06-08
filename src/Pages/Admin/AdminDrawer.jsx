@@ -95,8 +95,20 @@ const AdminDrawer = (props) => {
                   <CategoryOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Categories and Subcategories"
-                  secondary="View and manage categories and subcategories of products."
+                  primary="Categories"
+                  secondary="View and manage categories"
+                />
+              </ListItemButton>
+            </StyledLink>
+
+            <StyledLink to={"/admin/subcategories"}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <CategoryOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Subcategories"
+                  secondary="View and manage subcategories"
                 />
               </ListItemButton>
             </StyledLink>

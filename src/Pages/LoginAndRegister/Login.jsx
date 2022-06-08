@@ -34,7 +34,6 @@ const Login = ({ handleChange }) => {
 
   const submitHandler = async (data) => {
     //encrypt and login method
-    console.log("data", data);
     const result = await API.post("/identity/users/login", data);
     localStorage.setItem("access_token", result?.headers?.authorization);
   };
