@@ -1,27 +1,16 @@
 import { dummyCategories } from "../../sampleItems/dummyCategories";
-import { useState, useEffect } from "react";
-import { useData } from "../../shared/contexts/MenuItemContext";
+import { useEffect } from "react";
 import { COLORS } from "../values/colors";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import API from "../../api/API";
 import StyledLink from "./StyledLink";
 
 const Navbar = () => {
-  const [fetchedCategories, setFetchedCategories] = useState();
-  const { data, setValues } = useData();
-  const [searchInput, setSearchInput] = useState();
 
   useEffect(() => {
-    const fetchNavCategories = async () => {
-      const params = new URLSearchParams([["isPublic", true]]);
-      const result = await API.get(`categories`, { params });
 
-      setFetchedCategories(dummyCategories);
-    };
-    fetchNavCategories();
   }, []);
 
   // useEffect(() => {

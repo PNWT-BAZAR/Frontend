@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Button, Link, Typography } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
@@ -36,7 +36,7 @@ const Login = ({ handleChange }) => {
     //encrypt and login method
     console.log("data", data);
     const result = await API.post("/identity/users/login", data);
-    console.log("received result after login", result);
+    localStorage.setItem("access_token", result?.headers?.authorization);
   };
 
   return (
@@ -45,17 +45,16 @@ const Login = ({ handleChange }) => {
         style={{
           marginTop: "5px",
           display: "flex",
-          flexWrap: "wrap",
           alignItems: "center",
           justifyContent: "center",
           width: "100%",
           paddingLeft: "5px",
           paddingRight: "5px",
+          flexDirection: "column"
         }}
         onSubmit={handleSubmit((data) => submitHandler(data))}
       >
         <h2>Log into your account!</h2>
-        <Grid item>
           <FormInputField
             name="username"
             label="Username"
@@ -75,8 +74,6 @@ const Login = ({ handleChange }) => {
               ),
             }}
           />
-        </Grid>
-        <Grid item>
           <FormInputField
             name="password"
             label="Password"
@@ -95,7 +92,6 @@ const Login = ({ handleChange }) => {
               ),
             }}
           />
-        </Grid>
       </form>
 
       <Box
