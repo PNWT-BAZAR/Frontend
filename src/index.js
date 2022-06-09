@@ -17,7 +17,8 @@ import OrdersList from "./Pages/Admin/OrdersList";
 import ProductView from "./Pages/Product/ProductView";
 import Home from "./Pages/Home/Home";
 import CategoryView from "./Pages/Category/CategoryView";
-import CategoriesAndSubcategoriesList from "./Pages/Admin/CategoriesAndSubcategoriesList";
+import CategoriesList from "./Pages/Admin/CategoriesList";
+import SubcategoriesList from "./Pages/Admin/SubcategoriesList";
 import OrderView from "./Pages/Admin/OrderView";
 import NewLogin from "./Pages/LoginAndRegister/NewLogin";
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -143,7 +144,15 @@ root.render(
             path="/admin/categories"
             element={
               <AdminLayout>
-                <CategoriesAndSubcategoriesList />
+                <CategoriesList />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/subcategories"
+            element={
+              <AdminLayout>
+                <SubcategoriesList />
               </AdminLayout>
             }
           />

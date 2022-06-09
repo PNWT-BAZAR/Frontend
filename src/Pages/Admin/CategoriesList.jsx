@@ -1,24 +1,6 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import {
-  Box,
-  Button,
-  Accordion,
-  Typography,
-  AccordionSummary,
-  AccordionDetails,
-  Checkbox,
-  FormControlLabel,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-} from "@mui/material";
-import { COLORS } from "../values/colors";
+import { Box } from "@mui/material";
 import { useState } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-import { dummyCategories } from "../../sampleItems/dummyCategories";
-import { dummySubcategories } from "../../sampleItems/dummySubcategories";
 import { AdminCategories } from "./AdminCategories/AdminCategories";
 
 const columns = [
@@ -26,7 +8,7 @@ const columns = [
   { field: "name", headerName: "Category name", width: 200 },
 ];
 
-const CategoriesAndSubcategoriesList = () => {
+const CategoriesList = () => {
   const [categoryName, setCategoryName] = useState("");
   const [subcategoryName, setSubcategoryName] = useState("");
 
@@ -44,4 +26,4 @@ const CategoriesAndSubcategoriesList = () => {
   );
 };
 
-export default CategoriesAndSubcategoriesList;
+export default CategoriesList;
