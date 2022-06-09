@@ -35,6 +35,7 @@ const Login = ({ handleChange }) => {
   const submitHandler = async (data) => {
     //encrypt and login method
     const result = await API.post("/identity/users/login", data);
+    console.log("Login result", result);
     localStorage.setItem("access_token", result?.headers?.authorization);
   };
 
@@ -49,48 +50,46 @@ const Login = ({ handleChange }) => {
           width: "100%",
           paddingLeft: "5px",
           paddingRight: "5px",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
         onSubmit={handleSubmit((data) => submitHandler(data))}
       >
         <h2>Log into your account!</h2>
-          <FormInputField
-            name="username"
-            label="Username"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: (
-                <PersonOutlineOutlinedIcon
-                  sx={{ margin: "0px 10px 0px 0px" }}
-                />
-              ),
-            }}
-          />
-          <FormInputField
-            name="password"
-            label="Password"
-            type="password"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: (
-                <LockOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
-              ),
-            }}
-          />
+        <FormInputField
+          name="username"
+          label="Username"
+          errorobj={errors}
+          style={{
+            width: "300px",
+            marginRight: "20px",
+            marginBottom: "20px",
+            color: "black",
+            backgroundColor: "transparent",
+          }}
+          InputProps={{
+            startAdornment: (
+              <PersonOutlineOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
+            ),
+          }}
+        />
+        <FormInputField
+          name="password"
+          label="Password"
+          type="password"
+          errorobj={errors}
+          style={{
+            width: "300px",
+            marginRight: "20px",
+            marginBottom: "20px",
+            color: "black",
+            backgroundColor: "transparent",
+          }}
+          InputProps={{
+            startAdornment: (
+              <LockOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
+            ),
+          }}
+        />
       </form>
 
       <Box

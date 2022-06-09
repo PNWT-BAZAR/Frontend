@@ -31,17 +31,20 @@ export const AdminSubcategories = () => {
 
   const fetchFilteredData = async (searchParams) => {
     if (searchParams !== null) {
-      params = new URLSearchParams([["name", searchParams.name]]);
+      params = new URLSearchParams([
+        ["searchInput", searchParams?.name ?? ""],
+        ["categoryId", searchParams?.categoryId],
+      ]);
     }
     setLoading(true);
-    const result = await API.get("inventory/subcategories", { params });
+    const result = await API.get("inventory/subcategories/search", { params });
     console.log(" stae result", result);
     setFilteredData(result?.data?.objectsList);
     setLoading(false);
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       {showDetails ? (
         <SubcategoriesDetails
           toggleDetails={toggleDetails}

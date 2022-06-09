@@ -27,25 +27,23 @@ export const AdminCategories = () => {
     setitemDetails(data);
   };
 
-  var params = new URLSearchParams([
-    ["name", ""]
-  ]);
+  var params = new URLSearchParams([["name", ""]]);
 
   const fetchFilteredData = async (searchParams) => {
-    if (searchParams !== null) {
-      params = new URLSearchParams([
-        ["name", searchParams.name]
-      ]);
-    }
     setLoading(true);
-    const result = await API.get("inventory/categories", { params });
-    console.log(" stae result", result);
+    let result;
+    if (searchParams !== null) {
+      params = new URLSearchParams([["searchInput", searchParams?.name]]);
+      result = await API.get("inventory/categories/search", { params });
+    } else {
+      result = await API.get("inventory/categories", { params });
+    }
     setFilteredData(result?.data?.objectsList);
     setLoading(false);
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       {showDetails ? (
         <CategoriesDetails
           toggleDetails={toggleDetails}
@@ -71,6 +69,7 @@ export const AdminCategories = () => {
           <CategoriesTable
             filteredData={filteredData}
             goToDetails={goToDetails}
+            accessible={true}
           />
           {loading && <CircularProgress style={{ margin: "20px" }} />}
         </Box>

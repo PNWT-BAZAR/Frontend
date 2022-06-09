@@ -115,12 +115,6 @@ export default function SubcategoriesDetails(props) {
           </Box>
         </FormProvider>
       </Card>
-      {subcategories && (
-        <SubcategoriesTable
-          goToDetails={goToDetails}
-          filteredData={subcategories}
-        />
-      )}
     </Box>
   );
 }

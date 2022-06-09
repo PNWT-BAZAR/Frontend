@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import FormInputField from "../../../shared/controls/FormInput/FormInputField";
+import FormSelect from "../../../shared/controls/FormSelect/FormSelectField";
 import { Box, Card, Checkbox, FormLabel } from "@mui/material";
 import { AddOutlined, SearchOutlined } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { COLORS } from "../../values/colors";
+import API from "../../../api/API";
 
 export default function CategoriesSearch(props) {
+  const [categories, setCategories] = useState([]);
   const methods = useForm({
     defaultValues: {
-      name: "",
+      searchInput: "",
+      categoryId: "",
     },
   });
-  const { handleSubmit, register } = methods;
+  const { handleSubmit } = methods;
 
   const submitHandler = async (searchParams) => {
     props.fetchFilteredData(searchParams);
@@ -21,6 +25,18 @@ export default function CategoriesSearch(props) {
   const openAddFormHandler = () => {
     props.toggleSearch();
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const result = await API.get("/inventory/categories");
+      const array = [];
+      result?.data?.objectsList?.forEach((element) => {
+        array.push({ id: element.id, label: element.name });
+      });
+      setCategories(array);
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <Box
@@ -59,6 +75,19 @@ export default function CategoriesSearch(props) {
             }}
           >
             <Box sx={{ display: "flex" }}>
+              <FormSelect
+                name="categoryId"
+                label="category"
+                options={categories}
+                style={{
+                  width: "300px",
+                  marginLeft: "10px",
+                  marginRight: "10px",
+                  marginTop: "20px",
+                  color: "black",
+                  backgroundColor: "transparent",
+                }}
+              />
               <FormInputField
                 name="name"
                 label="name"

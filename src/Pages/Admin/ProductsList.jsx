@@ -2,20 +2,40 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@mui/material";
-import { dummyProducts } from "../../sampleItems/dummyProducts.js";
 import StyledLink from "../Layout/StyledLink";
 import { COLORS } from "../values/colors";
-
-const columns = [
-  { field: "id", headerName: "ID", width: 100 },
-  { field: "name", headerName: "Name", width: 150 },
-  { field: "quantity", headerName: "In stock", width: 150 },
-  { field: "price", headerName: "Price", width: 150 },
-  { field: "reviewScore", headerName: "Review score", width: 150 },
-];
+import { useState, useEffect } from "react";
+import API from "../../api/API";
 
 const ProductsList = () => {
   let navigate = useNavigate();
+
+  function getCategory(products) {
+    return `${products?.row?.category?.name}`;
+  }
+
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const result = await API.get("inventory/products", {});
+      setProducts(result?.data?.objectsList);
+      console.log("proiyvodi", products);
+    };
+    fetchProducts();
+  }, []);
+
+  const columns = [
+    { field: "id", headerName: "ID", width: 200 },
+    { field: "name", headerName: "Name", width: 350 },
+    { field: "quantity", headerName: "In stock", width: 200 },
+    { field: "price", headerName: "Price", width: 200 },
+    {
+      field: "category",
+      headerName: "Category",
+      width: 200,
+      valueGetter: getCategory,
+    },
+  ];
 
   const handleRowClick = (param, event) => {
     console.log(param.id);
@@ -24,15 +44,17 @@ const ProductsList = () => {
 
   return (
     <Box>
-      <Box style={{ height: "70vh", width: "100%" }}>
+      <Box
+        style={{
+          height: "70vh",
+          width: "100%",
+        }}
+      >
         <DataGrid
-          rows={dummyProducts}
+          rows={products}
           columns={columns}
           autoPageSize={true}
           rowSelection={"single"}
-          // onRowClick={(rowInfo) => {
-          //   console.log(rowInfo);
-          // }}
           onRowClick={handleRowClick}
         />
       </Box>

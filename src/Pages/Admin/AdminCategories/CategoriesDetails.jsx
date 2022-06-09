@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -16,14 +16,24 @@ const schema = yup.object().shape({
 
 export default function CategoriesDetails(props) {
   const { itemDetails, goToDetails } = props;
-  const subcategories = itemDetails?.firstLevelSubcategories
-    ? itemDetails?.firstLevelSubcategories
-    : itemDetails?.secondLevelSubcategories ?? [];
+
+  const [subcategories, setSubcategories] = useState([]);
+
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      const params = new URLSearchParams([["categoryId", itemDetails?.id]]);
+      const result = await API.get("inventory/subcategories/search", {
+        params,
+      });
+      setSubcategories(result?.data?.objectsList);
+    };
+    fetchSubcategories();
+  }, []);
 
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: itemDetails.name
+      name: itemDetails.name,
     },
   });
 
@@ -115,12 +125,11 @@ export default function CategoriesDetails(props) {
           </Box>
         </FormProvider>
       </Card>
-      {subcategories && (
-        <CategoriesTable
-          goToDetails={goToDetails}
-          filteredData={subcategories}
-        />
-      )}
+      <CategoriesTable
+        accessable={false}
+        goToDetails={goToDetails}
+        filteredData={subcategories}
+      />
     </Box>
   );
 }
