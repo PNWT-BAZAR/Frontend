@@ -105,31 +105,39 @@ export default function SubcategoriesForm(props) {
             }}
             onSubmit={handleSubmit((data) => submitHandler(data))}
           >
-            <FormSelect
-              name="categoryId"
-              label="category"
-              options={categories}
-              style={{
-                width: "300px",
-                marginLeft: "10px",
-                marginRight: "10px",
-                marginTop: "20px",
-                color: "black",
-                backgroundColor: "transparent",
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
               }}
-            />
-            <FormInputField
-              name="name"
-              label="name"
-              errorobj={errors}
-              style={{
-                width: "300px",
-                marginRight: "20px",
-                marginBottom: "20px",
-                color: "black",
-                backgroundColor: "transparent",
-              }}
-            />
+            >
+              <FormSelect
+                name="categoryId"
+                label="category"
+                options={categories}
+                style={{
+                  width: "300px",
+                  marginLeft: "10px",
+                  marginRight: "10px",
+                  marginTop: "20px",
+                  color: "black",
+                  backgroundColor: "transparent",
+                }}
+              />
+              <FormInputField
+                name="name"
+                label="name"
+                errorobj={errors}
+                style={{
+                  width: "300px",
+                  marginLeft: "10px",
+                  marginRight: "10px",
+                  marginTop: "20px",
+                  color: "black",
+                  backgroundColor: "transparent",
+                }}
+              />
+            </Box>
           </form>
           <Box>
             <IconButton
