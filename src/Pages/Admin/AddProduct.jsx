@@ -10,7 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import API from "../../api/API";
 import FormInputField from "../../shared/controls/FormInput/FormInputField";
 import FormSelect from "../../shared/controls/FormSelect/FormSelectField";
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 import {
   Box,
@@ -36,18 +36,22 @@ import { Category, ReviewsOutlined } from "@mui/icons-material";
 
 const schema = yup.object().shape({
   name: yup.string().required("Product name is required"),
-  price: yup .number().typeError("Price must be a number")
-  .positive("Positive number required")
-              .required("Please provide a price.")
-              .min(1, "Price must be greater than 0")
-              .max(99999, "Too expensive!"),
+  price: yup
+    .number()
+    .typeError("Price must be a number")
+    .positive("Positive number required")
+    .required("Please provide a price.")
+    .min(1, "Price must be greater than 0")
+    .max(99999, "Too expensive!"),
   description: yup.string().required("Product description is required"),
-  quantity: yup.number().typeError("Quantity must be a number")
-  .positive("Positive number required")
-  .required("Please provide a quantity.")
-  .min(1, "Quantity must be greater than 0")
-  .max(99999, "Too much!"),
-  review: yup.number("Review must be a number")
+  quantity: yup
+    .number()
+    .typeError("Quantity must be a number")
+    .positive("Positive number required")
+    .required("Please provide a quantity.")
+    .min(1, "Quantity must be greater than 0")
+    .max(99999, "Too much!"),
+  review: yup.number("Review must be a number"),
 });
 
 const AddProduct = (props) => {
@@ -59,7 +63,7 @@ const AddProduct = (props) => {
       name: "",
       price: 0,
       description: "",
-      quantity: 0
+      quantity: 0,
     },
   });
 
@@ -88,7 +92,6 @@ const AddProduct = (props) => {
   const [subcategories, setSubcategories] = useState([]);
   const [category, setCategory] = useState(product?.category);
 
-
   //const [selectedCategory, setSelectedCategory] = useState();
 
   useEffect(() => {
@@ -104,14 +107,16 @@ const AddProduct = (props) => {
     fetchCategories();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchSubcategoriesByCategory = async (searchParams) => {
       console.log(category);
       var params = new URLSearchParams([
         ["searchInput", searchParams?.name ?? ""],
         ["categoryId", searchParams?.categoryId],
       ]);
-      const result = await API.get("inventory/subcategories/search", { params });
+      const result = await API.get("inventory/subcategories/search", {
+        params,
+      });
       const array = [];
       result?.data?.objectsList?.forEach((element) => {
         array.push({ id: element.id, label: element.name });
@@ -119,10 +124,9 @@ const AddProduct = (props) => {
       console.log(" stae result", result);
       setSubcategories(array);
     };
-    fetchSubcategoriesByCategory({"categoryId": category?.id})
-  }, [category])
+    fetchSubcategoriesByCategory({ categoryId: category?.id });
+  }, [category]);
 
-  
   const [name, setName] = useState(product?.name);
   const [subcategory, setSubcategory] = useState(product?.subcategory);
   const [quantity, setQuantity] = useState(product?.quantity);
@@ -162,20 +166,17 @@ const AddProduct = (props) => {
               width: "300px",
               marginRight: "20px",
               marginBottom: "20px",
+              marginTop: "30px",
               color: "black",
               backgroundColor: "transparent",
             }}
             InputProps={{
               startAdornment: (
-                <ChairOutlinedIcon
-                  sx={{ margin: "0px 10px 0px 0px" }}
-                />
+                <ChairOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
               ),
             }}
           />
-          <Box
-            sx={{display: "flex"}}
-          >
+          <Box sx={{ display: "flex" }}>
             <FormSelect
               name="category"
               label="Category"
@@ -188,19 +189,15 @@ const AddProduct = (props) => {
                 color: "black",
                 backgroundColor: "transparent",
               }}
-              SelectProps={{
-                startAdornment: (
-                  <CategoryOutlinedIcon
-                    sx={{ margin: "0px 10px 0px 0px" }}
-                  />
-                ),
-              }}
+              startAdornment={
+                <InputAdornment position="start">
+                  <CategoryOutlinedIcon />
+                </InputAdornment>
+              }
             />
           </Box>
 
-          <Box
-            sx={{display: "flex"}}
-          >
+          <Box sx={{ display: "flex" }}>
             <FormSelect
               name="subcategory"
               label="Subcategory"
@@ -212,13 +209,12 @@ const AddProduct = (props) => {
                 marginBottom: "20px",
                 color: "black",
                 backgroundColor: "transparent",
-                startAdornment: (
-                  <CategoryOutlinedIcon
-                    sx={{ margin: "0px 10px 0px 0px" }}
-                  />
-                ),
               }}
-                
+              startAdornment={
+                <InputAdornment position="start">
+                  <CategoryOutlinedIcon />
+                </InputAdornment>
+              }
             />
           </Box>
 
@@ -235,9 +231,7 @@ const AddProduct = (props) => {
             }}
             InputProps={{
               startAdornment: (
-                <Inventory2OutlinedIcon
-                  sx={{ margin: "0px 10px 0px 0px" }}
-                />
+                <Inventory2OutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
               ),
             }}
           />
@@ -254,11 +248,7 @@ const AddProduct = (props) => {
               backgroundColor: "transparent",
             }}
             InputProps={{
-              startAdornment: (
-                <EuroIcon
-                  sx={{ margin: "0px 10px 0px 0px" }}
-                />
-              ),
+              startAdornment: <EuroIcon sx={{ margin: "0px 10px 0px 0px" }} />,
             }}
           />
 
@@ -306,9 +296,7 @@ const AddProduct = (props) => {
             }}
             InputProps={{
               startAdornment: (
-                <DescriptionOutlinedIcon
-                  sx={{ margin: "0px 10px 0px 0px" }}
-                />
+                <DescriptionOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
               ),
             }}
           />
@@ -326,16 +314,12 @@ const AddProduct = (props) => {
             }}
             InputProps={{
               startAdornment: (
-                <ReviewsOutlined
-                  sx={{ margin: "0px 10px 0px 0px" }}
-                />
+                <ReviewsOutlined sx={{ margin: "0px 10px 0px 0px" }} />
               ),
-              readOnly: true
+              readOnly: true,
             }}
           />
-          <Box
-            sx={{display:"flex"}}
-            >
+          <Box sx={{ display: "flex" }}>
             <Button
               onClick={() => navigate(-1)}
               sx={{
