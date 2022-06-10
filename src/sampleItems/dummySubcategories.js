@@ -1,38 +1,38 @@
 export const dummySubcategories = [
   {
     id: 1,
-    name: "Dining table",
+    label: "Dining table",
   },
   {
     id: 2,
-    name: "Coffee table",
+    label: "Coffee table",
   },
   {
     id: 3,
-    name: "Chair",
+    label: "Chair",
   },
   {
     id: 4,
-    name: "Bed",
+    label: "Bed",
   },
   {
     id: 5,
-    name: "Wardrobe",
+    label: "Wardrobe",
   },
   {
     id: 6,
-    name: "Sofa",
+    label: "Sofa",
   },
   {
     id: 7,
-    name: "Desk",
+    label: "Desk",
   },
   {
     id: 8,
-    name: "Bar stool",
+    label: "Bar stool",
   },
   {
     id: 9,
-    name: "Lamp",
+    label: "Lamp",
   },
 ];

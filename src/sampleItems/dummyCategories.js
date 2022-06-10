@@ -1,26 +1,26 @@
 export const dummyCategories = [
   {
     id: 1,
-    name: "Living room",
+    label: "Living room",
   },
   {
     id: 2,
-    name: "Dining room",
+    label: "Dining room",
   },
   {
     id: 3,
-    name: "Bedroom",
+    label: "Bedroom",
   },
   {
     id: 4,
-    name: "Kitchen",
+    label: "Kitchen",
   },
   {
     id: 5,
-    name: "Bathroom",
+    label: "Bathroom",
   },
   {
     id: 6,
-    name: "Workspace",
+    label: "Workspace",
   },
 ];
