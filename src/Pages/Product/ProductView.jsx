@@ -5,6 +5,7 @@ import ProductDescription from "./ProductDescription";
 import ProductImage from "./ProductImage";
 import { useState, useEffect } from "react";
 import API from "../../api/API";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const ProductView = () => {
   const [product, setProduct] = useState();
@@ -14,14 +15,10 @@ const ProductView = () => {
       window.location.pathname.lastIndexOf("/")
     );
     const fetchProduct = async () => {
-      console.log("PRODUCT ID", productId);
       const result = await API.get("/inventory/products" + productId);
-      console.log("RESULT", result);
       const prod = result?.data?.object;
-      console.log("PORD", prod);
       setProduct(prod);
     };
-    fetchProduct();
 
     const fetchProductImages = async () => {
       const result1 = await API.get(
@@ -35,23 +32,21 @@ const ProductView = () => {
         });
       });
       setProductImages(array);
-      console.log("PRODUCT IMAGES", productImages);
     };
-    fetchProductImages();
 
-    // API.get("/inventory/products" + productId).then((result) => {
-    //   setProduct(result?.data?.object);
-    //   const result1 = API.get("/inventory/productImages/product" + productId);
-    //   const array = [];
-    //   result1?.data?.objectsList?.forEach((element) => {
-    //     array.push({
-    //       id: element.id,
-    //       url: element.url,
-    //     });
-    //   });
-    //   setProductImages(array);
-    // });
+    fetchProduct();
+    fetchProductImages();
   }, []);
+
+  const [imgIndex, setImgIndex] = useState(0);
+
+  const handleClick = () => {
+    if (imgIndex === productImages.length - 1) {
+      setImgIndex(0);
+    } else {
+      setImgIndex(imgIndex + 1);
+    }
+  };
 
   return (
     <Box
@@ -67,25 +62,44 @@ const ProductView = () => {
         backgroundSize: "cover",
       }}
     >
-      {/* <Grid
-        container
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          alignItems: "flex-start",
-        }}
-      >
-        <Grid xs={12} sm={4} md={4} sx={{ height: "70vh" }}>
-          <ProductImage key={product?.id} image={productImages[0]?.url} />
+      {product && productImages && (
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "flex-start",
+          }}
+        >
+          <Grid
+            item
+            sx={{
+              height: "70vh",
+              width: "600px",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ProductImage
+              key={productImages[imgIndex]?.id}
+              image={productImages[imgIndex]?.url}
+            />
+            <ArrowForwardIosIcon
+              sx={{ cursor: "pointer", height: "50px", width: "50px" }}
+              onClick={handleClick}
+            />
+          </Grid>
+          <Grid item sx={{ height: "70vh", width: "550px" }}>
+            <ProductDescription key={product?.id} product={product} />
+          </Grid>
+          <Grid item sx={{ height: "50vh", width: "350px" }}>
+            <AddToCartCard key={product?.id} product={product} />
+          </Grid>
         </Grid>
-        <Grid xs={12} sm={4} md={4} sx={{ height: "70vh" }}>
-          <ProductDescription key={product?.id} product={product} />
-        </Grid>
-        <Grid xs={12} sm={2} md={2} sx={{ height: "50vh" }}>
-          <AddToCartCard key={product?.id} product={product} />
-        </Grid>
-      </Grid> */}
+      )}
     </Box>
   );
 };
