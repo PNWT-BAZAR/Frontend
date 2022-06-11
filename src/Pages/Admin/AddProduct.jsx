@@ -76,6 +76,13 @@ const AddProduct = (props) => {
     //create product
     data.totalReviews = 0;
     data.reviewSum = 0;
+    data.category = {
+      id: data.category
+    }
+
+    data.subcategory = {
+      id: data.subcategory
+    }
     const result = await API.post("/inventory/products", data);
     localStorage.setItem("access_token", result?.headers?.authorization);
     handleClickOpen();
