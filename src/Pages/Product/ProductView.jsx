@@ -35,13 +35,13 @@ const ProductView = () => {
         }}
       >
         <Grid xs={12} sm={4} md={4} sx={{ height: "70vh" }}>
-          <ProductImage key={product?.id} image={product?.url} />;
+          <ProductImage key={product?.id} image={product?.url} />
         </Grid>
         <Grid xs={12} sm={4} md={4} sx={{ height: "70vh" }}>
-          <ProductDescription key={product?.id} product={product} />;
+          <ProductDescription key={product?.id} product={product} />
         </Grid>
         <Grid xs={12} sm={2} md={2} sx={{ height: "50vh" }}>
-          <AddToCartCard key={product?.id} product={product} />;
+          <AddToCartCard key={product?.id} product={product} />
         </Grid>
       </Grid>
     </Box>
