@@ -52,17 +52,17 @@ const schema = yup.object().shape({
     .required("Please provide a quantity.")
     .min(1, "Quantity must be greater than 0")
     .max(99999, "Too much!"),
-  
-    category: yup.string().required("Category is required!"),
-    subcategory: yup.string().required("Subcategory is required!")
+
+  category: yup.string().required("Category is required!"),
+  subcategory: yup.string().required("Subcategory is required!"),
 });
 
 const AddProduct = (props) => {
   const navigate = useNavigate();
 
   const { state } = useLocation();
-  const product = state?.product
-  
+  const product = state?.product;
+
   const [filteredData, setFilteredData] = useState();
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -79,27 +79,29 @@ const AddProduct = (props) => {
       quantity: product?.quantity ?? 0,
       category: product?.category?.categoryId,
       subcategory: product?.subcategory?.subcategoryId,
-      review: product?.totalReviews > 0 ? 
-        product?.reviewSum / product?.totalReviews : "",
-      totalReviews: product?.totalReviews ?? 0
+      review:
+        product?.totalReviews > 0
+          ? (product?.reviewSum / product?.totalReviews).toFixed(1)
+          : "",
+      totalReviews: product?.totalReviews ?? 0,
     },
   });
 
   const {
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = methods;
 
   const submitHandler = async (data) => {
     data.category = {
-      id: data.category
-    }
+      id: data.category,
+    };
     data.subcategory = {
-      id: data.subcategory
-    }
+      id: data.subcategory,
+    };
 
     //update product
-    if(product !== undefined){
+    if (product !== undefined) {
       setIsUpdate(true);
       data.id = product.id;
       await API.put("/inventory/products", data);
@@ -112,19 +114,18 @@ const AddProduct = (props) => {
     //create product
     data.totalReviews = 0;
     data.reviewSum = 0;
-    const result = await API.post("/inventory/products", data).then((result)=>{
-      
-      console.log(result?.status)
-      console.log(result)
-      if(result?.status === 200){
-        console.log("test");
-        // setIsProductCreated(false);
-      }
-
-      
-    }).catch((error)=>{
-      console.log(error);
-    });
+    const result = await API.post("/inventory/products", data)
+      .then((result) => {
+        console.log(result?.status);
+        console.log(result);
+        if (result?.status === 200) {
+          console.log("test");
+          // setIsProductCreated(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // console.log(isProductCreated);
     handleClickOpen();
   };
@@ -132,7 +133,6 @@ const AddProduct = (props) => {
   const productId = window.location.pathname.split("/").at(-1);
 
   console.log("Product id is " + productId);
-
 
   //const [selectedCategory, setSelectedCategory] = useState();
 
@@ -183,12 +183,12 @@ const AddProduct = (props) => {
   const handleDelete = () => {
     console.log("DELETING" + product.id);
     setIsUpdate(false);
-    const result = API.delete("/inventory/products/"+product?.id).then(()=>{
+    const result = API.delete("/inventory/products/" + product?.id).then(() => {
       handleClickOpen();
     });
     console.log(result);
     //handleClickOpen();
-  }
+  };
 
   return (
     <FormProvider {...methods}>
@@ -397,8 +397,8 @@ const AddProduct = (props) => {
               Cancel
             </Button>
 
-            {product && 
-              ( <Button
+            {product && (
+              <Button
                 onClick={handleDelete}
                 sx={{
                   display: "flex",
@@ -408,7 +408,8 @@ const AddProduct = (props) => {
                 variant="outlined"
               >
                 Delete
-              </Button> )}
+              </Button>
+            )}
 
             <Button
               onClick={handleSubmit((data) => submitHandler(data))}
@@ -432,11 +433,11 @@ const AddProduct = (props) => {
           >
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                {product?.id === undefined ? 
-                "Product successfully added" :
-                isUpdate === true ?
-                "Product successfully updated" :
-                "Product successfully deleted"}
+                {product?.id === undefined
+                  ? "Product successfully added"
+                  : isUpdate === true
+                  ? "Product successfully updated"
+                  : "Product successfully deleted"}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
