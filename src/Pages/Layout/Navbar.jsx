@@ -1,16 +1,27 @@
 import { dummyCategories } from "../../sampleItems/dummyCategories";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { COLORS } from "../values/colors";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StyledLink from "./StyledLink";
+import API from "../../api/API";
 
 const Navbar = () => {
+  useEffect(() => {}, []);
 
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
-
+    const fetchCategories = async () => {
+      const result = await API.get("/inventory/categories");
+      const array = [];
+      result?.data?.objectsList?.forEach((element) => {
+        array.push({ id: element.id, label: element.name });
+      });
+      setCategories(array);
+    };
+    fetchCategories();
   }, []);
 
   // useEffect(() => {
@@ -193,8 +204,8 @@ const Navbar = () => {
 
         <hr style={{ color: "white", width: "99%" }}></hr>
         <CategoriesNavigation>
-          {dummyCategories &&
-            dummyCategories.map((category) => {
+          {categories &&
+            categories.map((category) => {
               return (
                 <MenuItem
                   // onMouseEnter={() => {
@@ -205,7 +216,7 @@ const Navbar = () => {
                   // }}
                   key={category.id}
                 >
-                  {category.name}
+                  {category.label}
                 </MenuItem>
               );
             })}

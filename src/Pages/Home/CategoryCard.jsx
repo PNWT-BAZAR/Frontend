@@ -35,7 +35,7 @@ const CategoryCard = (props) => {
         }}
         elevation={5}
       >
-        {category?.name}
+        {category?.label}
       </Card>
     </Category>
   );
