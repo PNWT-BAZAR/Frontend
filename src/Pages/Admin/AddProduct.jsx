@@ -11,6 +11,7 @@ import API from "../../api/API";
 import FormInputField from "../../shared/controls/FormInput/FormInputField";
 import FormSelect from "../../shared/controls/FormSelect/FormSelectField";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { useLocation } from "react-router-dom";
 
 import {
   Box,
@@ -51,46 +52,87 @@ const schema = yup.object().shape({
     .required("Please provide a quantity.")
     .min(1, "Quantity must be greater than 0")
     .max(99999, "Too much!"),
-  review: yup.number("Review must be a number"),
+  
+    category: yup.string().required("Category is required!"),
+    subcategory: yup.string().required("Subcategory is required!")
 });
 
 const AddProduct = (props) => {
   const navigate = useNavigate();
 
+  const { state } = useLocation();
+  const product = state?.product
+  
+  const [filteredData, setFilteredData] = useState();
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [category, setCategory] = useState();
+
+  const [isUpdate, setIsUpdate] = useState(false);
+
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: "",
-      price: 0,
-      description: "",
-      quantity: 0,
+      name: product?.name ?? "",
+      price: product?.price ?? 0,
+      description: product?.description ?? "",
+      quantity: product?.quantity ?? 0,
+      category: product?.category?.categoryId,
+      subcategory: product?.subcategory?.subcategoryId,
+      review: product?.totalReviews > 0 ? 
+        product?.reviewSum / product?.totalReviews : "",
+      totalReviews: product?.totalReviews ?? 0
     },
   });
 
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = methods;
 
   const submitHandler = async (data) => {
+    data.category = {
+      id: data.category
+    }
+    data.subcategory = {
+      id: data.subcategory
+    }
+
+    //update product
+    if(product !== undefined){
+      setIsUpdate(true);
+      data.id = product.id;
+      await API.put("/inventory/products", data);
+      handleClickOpen();
+      console.log("UPDATING");
+      console.log(data);
+      return;
+    }
+
     //create product
     data.totalReviews = 0;
     data.reviewSum = 0;
-    const result = await API.post("/inventory/products", data);
-    localStorage.setItem("access_token", result?.headers?.authorization);
+    const result = await API.post("/inventory/products", data).then((result)=>{
+      
+      console.log(result?.status)
+      console.log(result)
+      if(result?.status === 200){
+        console.log("test");
+        // setIsProductCreated(false);
+      }
+
+      
+    }).catch((error)=>{
+      console.log(error);
+    });
+    // console.log(isProductCreated);
     handleClickOpen();
   };
 
-  const productId =
-    window.location.pathname.substring(
-      window.location.pathname.lastIndexOf("/") + 1
-    ) - 1;
-  const product = dummyProducts[productId];
+  const productId = window.location.pathname.split("/").at(-1);
 
-  const [filteredData, setFilteredData] = useState();
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-  const [category, setCategory] = useState(product?.category);
+  console.log("Product id is " + productId);
+
 
   //const [selectedCategory, setSelectedCategory] = useState();
 
@@ -127,22 +169,26 @@ const AddProduct = (props) => {
     fetchSubcategoriesByCategory({ categoryId: category?.id });
   }, [category]);
 
-  const [name, setName] = useState(product?.name);
-  const [subcategory, setSubcategory] = useState(product?.subcategory);
-  const [quantity, setQuantity] = useState(product?.quantity);
-  const [price, setPrice] = useState(product?.price);
-  const [description, setDescription] = useState(product?.description);
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log({ name, description, quantity, price, category, subcategory });
   };
 
   const handleClose = () => {
     setOpen(false);
+    navigate(-1);
   };
+
+  const handleDelete = () => {
+    console.log("DELETING" + product.id);
+    setIsUpdate(false);
+    const result = API.delete("/inventory/products/"+product?.id).then(()=>{
+      handleClickOpen();
+    });
+    console.log(result);
+    //handleClickOpen();
+  }
 
   return (
     <FormProvider {...methods}>
@@ -319,6 +365,25 @@ const AddProduct = (props) => {
               readOnly: true,
             }}
           />
+
+          <FormInputField
+            name="totalReviews"
+            label="Total number of reviews"
+            errorobj={errors}
+            style={{
+              width: "300px",
+              marginRight: "20px",
+              marginBottom: "20px",
+              color: "black",
+              backgroundColor: "transparent",
+            }}
+            InputProps={{
+              startAdornment: (
+                <ReviewsOutlined sx={{ margin: "0px 10px 0px 0px" }} />
+              ),
+              readOnly: true,
+            }}
+          />
           <Box sx={{ display: "flex" }}>
             <Button
               onClick={() => navigate(-1)}
@@ -331,6 +396,20 @@ const AddProduct = (props) => {
             >
               Cancel
             </Button>
+
+            {product && 
+              ( <Button
+                onClick={handleDelete}
+                sx={{
+                  display: "flex",
+                  width: 70,
+                  margin: "10px 10px 0 0",
+                }}
+                variant="outlined"
+              >
+                Delete
+              </Button> )}
+
             <Button
               onClick={handleSubmit((data) => submitHandler(data))}
               sx={{
@@ -353,7 +432,11 @@ const AddProduct = (props) => {
           >
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Product successfully saved!
+                {product?.id === undefined ? 
+                "Product successfully added" :
+                isUpdate === true ?
+                "Product successfully updated" :
+                "Product successfully deleted"}
               </DialogContentText>
             </DialogContent>
             <DialogActions>

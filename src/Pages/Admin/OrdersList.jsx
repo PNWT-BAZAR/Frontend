@@ -2,6 +2,9 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import API from "../../api/API";
+
 
 import { dummyOrders } from "../../sampleItems/dummyOrders";
 
@@ -16,16 +19,26 @@ const columns = [
 const OrdersList = () => {
   let navigate = useNavigate();
 
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const result = await API.get("order/orders", {});
+      setOrders(result?.data?.objectsList);
+      console.log("orderi", orders);
+    };
+    fetchOrders();
+  }, []);
+
   const handleRowClick = (param, event) => {
-    console.log(param.id);
-    navigate(`/admin/orders/${param.id}`);
+    navigate(`/admin/orders/${param.id}`, {state: {id: param.id, order: param.row}});
   };
 
   return (
     <Box>
       <Box style={{ height: "70vh", width: "100%" }}>
         <DataGrid
-          rows={dummyOrders}
+          rows={orders}
           columns={columns}
           autoPageSize={true}
           rowSelection={"single"}
