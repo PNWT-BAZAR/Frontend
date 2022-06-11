@@ -39,7 +39,8 @@ const ProductsList = () => {
 
   const handleRowClick = (param, event) => {
     console.log(param.id);
-    navigate(`/admin/products/${param.id}`);
+    console.log(param);
+    navigate(`/admin/products/${param.id}`, {state: {id: param.id, product: param.row}});
   };
 
   return (
