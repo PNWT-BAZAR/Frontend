@@ -68,12 +68,7 @@ const AddProduct = (props) => {
   const [subcategories, setSubcategories] = useState([]);
   const [category, setCategory] = useState();
 
-  const [name, setName] = useState();
-  const [subcategory, setSubcategory] = useState();
-  const [quantity, setQuantity] = useState();
-  const [price, setPrice] = useState();
-  const [description, setDescription] = useState();
-  const [review, setReview] = useState();
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -103,9 +98,10 @@ const AddProduct = (props) => {
       id: data.subcategory
     }
 
+    //update product
     if(product !== undefined){
+      setIsUpdate(true);
       data.id = product.id;
-      //update product
       await API.put("/inventory/products", data);
       handleClickOpen();
       console.log("UPDATING");
@@ -186,6 +182,7 @@ const AddProduct = (props) => {
 
   const handleDelete = () => {
     console.log("DELETING" + product.id);
+    setIsUpdate(false);
     const result = API.delete("/inventory/products/"+product?.id).then(()=>{
       handleClickOpen();
     });
@@ -435,7 +432,11 @@ const AddProduct = (props) => {
           >
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Test
+                {product?.id === undefined ? 
+                "Product successfully added" :
+                isUpdate === true ?
+                "Product successfully updated" :
+                "Product successfully deleted"}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
