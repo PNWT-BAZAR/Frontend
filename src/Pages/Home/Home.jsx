@@ -26,7 +26,7 @@ const Home = () => {
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-          BESTSELLERS
+          TOP PICKS
         </Typography>
       </Box>
       <BestProductsContainer />

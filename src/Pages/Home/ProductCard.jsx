@@ -78,7 +78,7 @@ export const ProductCard = (props) => {
               <Typography>
                 {product?.totalReviews === 0
                   ? "No reviews yet!"
-                  : product?.reviewSum / product?.totalReviews}
+                  : (product?.reviewSum / product?.totalReviews).toFixed(1)}
               </Typography>
             </Box>
           </Box>

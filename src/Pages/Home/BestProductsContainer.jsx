@@ -15,22 +15,28 @@ const BestProductsContainer = () => {
       const result = await API.get("/inventory/products");
       const array = [];
       result?.data?.objectsList?.forEach((element) => {
-        array.push({
-          id: element.id,
-          name: element.name,
-          description: element.description,
-          quantity: element.quantity,
-          price: element.price,
-          category: element.category,
-          subcategory: element.subcategory,
-          reviewSum: element.reviewSum,
-          totalReviews: element.totalReviews,
-        });
+        if (element.totalReviews != 0) {
+          array.push({
+            id: element.id,
+            name: element.name,
+            description: element.description,
+            quantity: element.quantity,
+            price: element.price,
+            category: element.category,
+            subcategory: element.subcategory,
+            reviewSum: element.reviewSum,
+            totalReviews: element.totalReviews,
+          });
+        }
       });
       setProducts(array);
     };
     fetchProducts();
   }, []);
+
+  const prodDescending = [...products].sort(
+    (a, b) => b.reviewSum / b.totalReviews - a.reviewSum / a.totalReviews
+  );
 
   return (
     <Box
@@ -42,7 +48,7 @@ const BestProductsContainer = () => {
         margin: "50px 0px 0px 0px",
       }}
     >
-      {products?.map((prod) => {
+      {prodDescending?.slice(0, 7).map((prod) => {
         return (
           <ProductCard
             key={prod?.id}
