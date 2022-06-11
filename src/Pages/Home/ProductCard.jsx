@@ -2,6 +2,8 @@ import { Box, Card, Typography, CardMedia } from "@mui/material";
 import React from "react";
 import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import API from "../../api/API";
 
 const Wrapper = styled.div`
   &:hover {
@@ -11,6 +13,25 @@ const Wrapper = styled.div`
 
 export const ProductCard = (props) => {
   const { product, onClick } = props;
+
+  const [productImages, setProductImages] = useState([]);
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      const result = await API.get(
+        "/inventory/productImages/product/" + product?.id
+      );
+      const array = [];
+      result?.data?.objectsList?.forEach((element) => {
+        array.push({
+          id: element.id,
+          url: element.url,
+        });
+      });
+      setProductImages(array);
+    };
+    fetchProductImages();
+  }, []);
+
   return (
     <Wrapper>
       <Card
@@ -32,7 +53,7 @@ export const ProductCard = (props) => {
               resizeMode: "contain",
             }}
             component="img"
-            image={product?.url}
+            image={productImages[0]?.url}
           />
           <Box
             sx={{
@@ -54,7 +75,11 @@ export const ProductCard = (props) => {
               }}
             >
               <StarOutlinedIcon />
-              <Typography>{product?.reviewScore}</Typography>
+              <Typography>
+                {product?.totalReviews === 0
+                  ? "No reviews yet!"
+                  : (product?.reviewSum / product?.totalReviews).toFixed(1)}
+              </Typography>
             </Box>
           </Box>
         </Box>

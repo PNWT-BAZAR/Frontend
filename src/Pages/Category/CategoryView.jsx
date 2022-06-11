@@ -1,9 +1,11 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
+import API from "../../api/API";
+
 import {
   Box,
   Drawer,
   AppBar,
-  CssBaseline,
   Toolbar,
   List,
   Typography,
@@ -28,12 +30,30 @@ const drawerWidth = 240;
 
 export default function CategoryView() {
   const navigate = useNavigate();
+  const categoryId = window.location.pathname.substring(
+    window.location.pathname.lastIndexOf("/") + 1
+  );
+  const [category, setCategory] = useState();
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const result = await API.get("/inventory/categories/" + categoryId);
+      const cat = result?.data?.object;
+      setCategory(cat);
+    };
+    fetchCategories();
+  }, []);
 
-  const categoryId =
-    window.location.pathname.substring(
-      window.location.pathname.lastIndexOf("/") + 1
-    ) - 1;
-  const category = dummyCategories[categoryId];
+  const [subcategories, setSubcategories] = useState([]);
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      const params = new URLSearchParams([["categoryId", categoryId]]);
+      const result = await API.get("inventory/subcategories/search", {
+        params,
+      });
+      setSubcategories(result?.data?.objectsList);
+    };
+    fetchSubcategories();
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -55,11 +75,11 @@ export default function CategoryView() {
       >
         <Toolbar sx={{ height: "130px" }} />
         <Typography variant="h4" alignSelf="center" marginTop={5}>
-          {category.name}
+          {category?.name}
         </Typography>
         <Divider />
         <List>
-          {dummySubcategories.map((subcategory) => (
+          {subcategories?.map((subcategory) => (
             <ListItem key={subcategory?.id} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
