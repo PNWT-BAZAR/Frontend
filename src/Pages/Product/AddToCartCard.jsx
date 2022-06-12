@@ -31,7 +31,22 @@ const AddToCartCard = (props) => {
   const dateEnd =
     date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    var cartJson = localStorage.getItem('cart');
+    var cart;
+    if (!cartJson) {
+        cart = new Map();
+    } else {
+        cart = new Map(JSON.parse(cartJson));
+    }
+    var cartProductQuantity = cart.get(product.id);
+    if (!cartProductQuantity) {
+        cart.set(product.id, quantity)
+    } else {
+        cart.set(product.id, cartProductQuantity + quantity);
+    }
+    localStorage.setItem('cart', JSON.stringify(Array.from(cart.entries())));
+  };
 
   return (
     <Paper
