@@ -23,6 +23,12 @@ import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 
 const AdminDrawer = (props) => {
   const drawerWidth = "20vw";
+  const handleLogout = ()=>{
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = "/login";
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -137,6 +143,7 @@ const AdminDrawer = (props) => {
             position: "absolute",
             bottom: 0,
           }}
+          onClick={handleLogout}
         >
           Log Out
         </Button>
