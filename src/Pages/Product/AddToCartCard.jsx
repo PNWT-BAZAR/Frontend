@@ -8,6 +8,7 @@ const AddToCartCard = (props) => {
   const [quantity, setQuantity] = useState(0);
   const [shipping, setShipping] = useState(20);
   const [totalPrice, setTotalPrice] = useState(0);
+
   useEffect(() => {
     if (quantity > 0 && quantity * product.price > 100) {
       setShipping(0);

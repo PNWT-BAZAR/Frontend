@@ -13,16 +13,16 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const CartProductCard = (props) => {
-  const { product } = props;
-  const [quantity, setQuantity] = useState(product.quantity);
+  const { product, onQuantityChanged } = props;
+  //const [quantity, setQuantity] = useState(product.quantity);
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
-    if (quantity > 0) {
-      setTotalPrice(quantity * product.price);
-    } else if (quantity === 0) {
+    if (product.quantity > 0) {
+      setTotalPrice((product.quantity * product.price).toFixed(2));
+    } else if (product.quantity === 0) {
       setTotalPrice(0);
     }
-  }, [quantity]);
+  }, [product.quantity]);
 
   return (
     <Card
@@ -61,14 +61,14 @@ const CartProductCard = (props) => {
             Quantity:
             <IconButton
               aria-label="minus"
-              onClick={(e) => setQuantity(quantity === 0 ? 0 : quantity - 1)}
+              onClick={(e) => onQuantityChanged(product.quantity === 0 ? 0 : product.quantity - 1, product.id)}
             >
               <RemoveCircleOutlineOutlinedIcon />
             </IconButton>
-            {quantity}
+            {product.quantity}
             <IconButton
               aria-label="plus"
-              onClick={(e) => setQuantity(quantity + 1)}
+              onClick={(e) => onQuantityChanged(product.quantity + 1, product.id)}
             >
               <AddCircleOutlineOutlinedIcon />
             </IconButton>

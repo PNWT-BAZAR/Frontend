@@ -48,7 +48,7 @@ const Login = ({ handleChange }) => {
       window.location.href = "/admin";
     }else{
       console.log("user je u pitanju");
-      window.location.href = "/";
+      //window.location.href = "/";
     }
   };
 

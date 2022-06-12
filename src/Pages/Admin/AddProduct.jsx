@@ -68,7 +68,8 @@ const AddProduct = (props) => {
   const [filteredData, setFilteredData] = useState();
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  const [category, setCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedSubcategory, setSelectedSubcategory] = useState();
 
   const [isUpdate, setIsUpdate] = useState(false);
 
@@ -138,8 +139,30 @@ const AddProduct = (props) => {
 
   //const [selectedCategory, setSelectedCategory] = useState();
 
+  // useEffect(() => {
+  //   //console.log(category);
+  //   const fetchCategories = async () => {
+  //     const result = await API.get("/inventory/categories");
+  //     const array = [];
+  //     result?.data?.objectsList?.forEach((element) => {
+  //       array.push({ id: element.id, label: element.name });
+  //     });
+  //     setCategories(array);
+  //   };
+  //   fetchCategories();
+  // }, []);
+
+  const changeSelectedCategoryHandler = (selectedCategory) => {
+    setSelectedCategory(selectedCategory);
+  };
+
+  const changeSelectedSubcategoryHandler = (
+    selectedSubcategory
+  ) => {
+    setSelectedSubcategory(selectedSubcategory);
+  };
+
   useEffect(() => {
-    console.log(category);
     const fetchCategories = async () => {
       const result = await API.get("/inventory/categories");
       const array = [];
@@ -148,29 +171,50 @@ const AddProduct = (props) => {
       });
       setCategories(array);
     };
-    fetchCategories();
-  }, []);
 
-  useEffect(() => {
-    const fetchSubcategoriesByCategory = async (searchParams) => {
-      console.log("KEMOTEST");
-      console.log(category);
-      var params = new URLSearchParams([
-        ["searchInput", searchParams?.name ?? ""],
-        ["categoryId", searchParams?.categoryId],
-      ]);
-      const result = await API.get("inventory/subcategories/search", {
-        params,
+    const fetchSubcategories = async () => {
+      const resultSC = await API.get("/inventory/subcategories");
+      var array = [];
+      resultSC?.data?.objectsList?.forEach((element) => {
+        array.push({
+          id: element.id,
+          label: element.name,
+          categoryId: element.category.id,
+        });
       });
-      const array = [];
-      result?.data?.objectsList?.forEach((element) => {
-        array.push({ id: element.id, label: element.name });
-      });
-      console.log(" stae result", result);
+      if (selectedCategory !== undefined) {
+        array = array.filter((x) => x.categoryId === selectedCategory.id);
+      }
       setSubcategories(array);
     };
-    fetchSubcategoriesByCategory({ categoryId: category?.id });
-  }, [category]);
+
+    
+
+    fetchCategories();
+    fetchSubcategories();
+  }, [selectedCategory, selectedSubcategory]);
+
+
+  // useEffect(() => {
+  //   const fetchSubcategoriesByCategory = async (searchParams) => {
+  //     console.log("KEMOTEST");
+  //     console.log(category);
+  //     var params = new URLSearchParams([
+  //       ["searchInput", searchParams?.name ?? ""],
+  //       ["categoryId", searchParams?.categoryId],
+  //     ]);
+  //     const result = await API.get("inventory/subcategories/search", {
+  //       params,
+  //     });
+  //     const array = [];
+  //     result?.data?.objectsList?.forEach((element) => {
+  //       array.push({ id: element.id, label: element.name });
+  //     });
+  //     console.log(" stae result", result);
+  //     setSubcategories(array);
+  //   };
+  //   fetchSubcategoriesByCategory({ categoryId: category?.id });
+  // }, [category]);
 
   const [open, setOpen] = React.useState(false);
 
@@ -230,6 +274,7 @@ const AddProduct = (props) => {
               <FormSelect
                 name="category"
                 label="Category"
+                changevalue={changeSelectedCategoryHandler}
                 errorobj={errors}
                 options={categories}
                 style={{
@@ -251,6 +296,7 @@ const AddProduct = (props) => {
               <FormSelect
                 name="subcategory"
                 label="Subcategory"
+                changevalue={changeSelectedSubcategoryHandler}
                 errorobj={errors}
                 options={subcategories}
                 style={{
