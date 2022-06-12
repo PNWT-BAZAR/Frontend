@@ -12,6 +12,8 @@ import FormInputField from "../../shared/controls/FormInput/FormInputField";
 import FormSelect from "../../shared/controls/FormSelect/FormSelectField";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useLocation } from "react-router-dom";
+import { COLORS } from "../values/colors";
+
 
 import {
   Box,
@@ -384,7 +386,36 @@ const AddProduct = (props) => {
               readOnly: true,
             }}
           />
-          <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex" }}>
+          <Button
+              onClick={handleSubmit((data) => submitHandler(data))}
+              sx={{
+                display: "flex",
+                width: 70,
+                margin: "10px 10px 0 0",
+              }}
+              type="submit"
+              variant="outlined"
+            >
+              Save
+          </Button>
+
+          {product && 
+              ( <Button
+                onClick={handleDelete}
+                sx={{
+                  display: "flex",
+                  width: 70,
+                  margin: "10px 10px 0 0",
+                  backgroundColor: "red" + "!important",
+                  borderColor: "white",
+                  color: "white"
+                }}
+                variant="outlined"
+              >
+                Delete
+              </Button> )}
+
             <Button
               onClick={() => navigate(-1)}
               sx={{
@@ -396,32 +427,7 @@ const AddProduct = (props) => {
             >
               Cancel
             </Button>
-
-            {product && 
-              ( <Button
-                onClick={handleDelete}
-                sx={{
-                  display: "flex",
-                  width: 70,
-                  margin: "10px 10px 0 0",
-                }}
-                variant="outlined"
-              >
-                Delete
-              </Button> )}
-
-            <Button
-              onClick={handleSubmit((data) => submitHandler(data))}
-              sx={{
-                display: "flex",
-                width: 70,
-                margin: "10px 0 0 0",
-              }}
-              type="submit"
-              variant="outlined"
-            >
-              Save
-            </Button>
+            
           </Box>
 
           <Dialog
