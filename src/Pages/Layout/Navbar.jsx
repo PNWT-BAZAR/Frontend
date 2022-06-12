@@ -1,19 +1,32 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { COLORS } from "../values/colors";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StyledLink from "./StyledLink";
 import API from "../../api/API";
 import { useData } from "../../shared/contexts/MenuItemContext";
 import Dropdown from "./Dropdown";
+import jwtDecode from "jwt-decode";
 
 const Navbar = () => {
   useEffect(() => {}, []);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = "/login";
+  };
+
   const { data, setValues } = useData();
   const [categories, setCategories] = useState([]);
+
+  const username = localStorage.access_token
+    ? jwtDecode(localStorage.access_token).sub
+    : undefined;
+
   useEffect(() => {
     const fetchCategories = async () => {
       const result = await API.get("/inventory/categories");
@@ -200,14 +213,25 @@ const Navbar = () => {
             </SearchContainer>
           </Center>
           <Right>
-            <StyledLink to="/login">
-              <Button variant="text" sx={{ color: "black" }}>
-                LOGIN/REGISTER
-              </Button>
-            </StyledLink>
-            <StyledLink to="/cart">
-              <ShoppingCartOutlinedIcon sx={{ color: "black" }} />
-            </StyledLink>
+            {username ? (
+              <React.Fragment>
+                <div>WELCOME {username} </div>
+                <StyledLink to="/cart">
+                  <ShoppingCartOutlinedIcon />
+                </StyledLink>
+                <div>
+                  <StyledLink to="/login" onClick={handleLogout}>
+                    <LogoutOutlinedIcon />
+                  </StyledLink>
+                </div>
+              </React.Fragment>
+            ) : (
+              <StyledLink to="/login">
+                <Button variant="text" sx={{ color: "black" }}>
+                  LOGIN/REGISTER
+                </Button>
+              </StyledLink>
+            )}
           </Right>
         </Wrapper>
 
@@ -218,12 +242,16 @@ const Navbar = () => {
               return (
                 <MenuItem
                   onMouseEnter={async () => {
-                    let subcategories = []
-                      const result = await API.get(
-                        `/inventory/subcategories/search?categoryId=${category?.id}`
-                      );
-                      subcategories = result?.data?.objectsList;
-                    setValues({ showDropdown: true, category: category, subcategories: subcategories });
+                    let subcategories = [];
+                    const result = await API.get(
+                      `/inventory/subcategories/search?categoryId=${category?.id}`
+                    );
+                    subcategories = result?.data?.objectsList;
+                    setValues({
+                      showDropdown: true,
+                      category: category,
+                      subcategories: subcategories,
+                    });
                   }}
                   onMouseOut={() => {
                     setValues({ showDropdown: false });
@@ -236,9 +264,7 @@ const Navbar = () => {
             })}
         </CategoriesNavigation>
         <DropDownContainer>
-          {data?.showDropdown && !data?.showSearchDropdown && (
-            <Dropdown />
-          )}
+          {data?.showDropdown && !data?.showSearchDropdown && <Dropdown />}
         </DropDownContainer>
       </ColumnWrapper>
     </Container>

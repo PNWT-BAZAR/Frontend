@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useData } from "../../shared/contexts/MenuItemContext";
 import StyledLink from "./StyledLink";
+import { COLORS } from "../values/colors";
 
 const DropdownContainer = styled.div`
-  width: 90%;
+  width: 40%;
   height: auto;
-  min-height: 300px;
+  min-height: 100px;
   display: flex;
   wrap: flex-wrap;
   justify-content: center;
@@ -34,7 +35,7 @@ const List = styled.ul`
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   @media (max-width: 600px) {
     flex-direction: column;
     flex-wrap: nowrap;
@@ -47,16 +48,13 @@ const List = styled.ul`
 
 const ListItem = styled.div`
   margin: 7px;
-
-`
+`;
 
 const Dropdown = (props) => {
   const { data, setValues } = useData();
   const subcategories = data?.subcategories;
 
-  useEffect(() => {
- 
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   return (
     <DropdownContainer
@@ -71,7 +69,6 @@ const Dropdown = (props) => {
         {subcategories &&
           subcategories?.map((subcategory) => {
             return [
-          
               <StyledLink
                 key={subcategory?.id}
                 onClick={() => {
@@ -83,12 +80,11 @@ const Dropdown = (props) => {
                     "?categoryId=" +
                     data?.category?.id +
                     "&subcategoryId=" +
-                    subcategory?.id
+                    subcategory?.id,
                 }}
               >
-                    <ListItem>
-                
-                    {subcategory.name}
+                <ListItem>
+                  <i>{subcategory.name}</i>
                 </ListItem>
               </StyledLink>,
             ];
