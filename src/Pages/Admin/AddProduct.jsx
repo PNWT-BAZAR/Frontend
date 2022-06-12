@@ -79,8 +79,8 @@ const AddProduct = (props) => {
       price: product?.price ?? 0,
       description: product?.description ?? "",
       quantity: product?.quantity ?? 0,
-      category: product?.category?.categoryId,
-      subcategory: product?.subcategory?.subcategoryId,
+      category: product?.category?.id,
+      subcategory: product?.subcategory?.id,
       review: product?.totalReviews > 0 ? 
         product?.reviewSum / product?.totalReviews : "",
       totalReviews: product?.totalReviews ?? 0
@@ -153,6 +153,7 @@ const AddProduct = (props) => {
 
   useEffect(() => {
     const fetchSubcategoriesByCategory = async (searchParams) => {
+      console.log("KEMOTEST");
       console.log(category);
       var params = new URLSearchParams([
         ["searchInput", searchParams?.name ?? ""],
@@ -193,267 +194,269 @@ const AddProduct = (props) => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit((data) => submitHandler(data))}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            height: "100vh",
-            width: "100%",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-          }}
-        >
-          <FormInputField
-            name="name"
-            label="Name"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              marginTop: "30px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: (
-                <ChairOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
-              ),
-            }}
-          />
-          <Box sx={{ display: "flex" }}>
-            <FormSelect
-              name="category"
-              label="Category"
-              errorobj={errors}
-              options={categories}
-              style={{
-                width: "300px",
-                marginRight: "20px",
-                marginBottom: "20px",
-                color: "black",
-                backgroundColor: "transparent",
-              }}
-              startAdornment={
-                <InputAdornment position="start">
-                  <CategoryOutlinedIcon />
-                </InputAdornment>
-              }
-            />
-          </Box>
-
-          <Box sx={{ display: "flex" }}>
-            <FormSelect
-              name="subcategory"
-              label="Subcategory"
-              errorobj={errors}
-              options={subcategories}
-              style={{
-                width: "300px",
-                marginRight: "20px",
-                marginBottom: "20px",
-                color: "black",
-                backgroundColor: "transparent",
-              }}
-              startAdornment={
-                <InputAdornment position="start">
-                  <CategoryOutlinedIcon />
-                </InputAdornment>
-              }
-            />
-          </Box>
-
-          <FormInputField
-            name="quantity"
-            label="Quantity"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: (
-                <Inventory2OutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
-              ),
-            }}
-          />
-
-          <FormInputField
-            name="price"
-            label="Price"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: <EuroIcon sx={{ margin: "0px 10px 0px 0px" }} />,
-            }}
-          />
-
-          {/* <label
-            htmlFor="file-upload"
-            style={{
-              width: "200px",
-              height: "57px",
-              cursor: "pointer",
+    categories && subcategories && (
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit((data) => submitHandler(data))}>
+          <Box
+            sx={{
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
-              marginTop: "10px",
-              justifyContent: "center",
-              color: "gray",
-              border: "1px solid lightgray",
-              borderWidth: "thin",
-              borderRadius: "5px",
+              height: "100vh",
+              width: "100%",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
             }}
           >
-            Add Images
-          </label>
-
-          <input
-            style={{ display: "none" }}
-            type="file"
-            name="productImages"
-            id="file-upload"
-            multiple
-            onChange={(event) => {
-              //   setImagesFiles((oldArray) => [...oldArray, ...event.target.files]);
-              console.log("Uploaded image!", event.target.value);
-            }}
-          /> */}
-
-          <FormInputField
-            name="description"
-            label="Description"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: (
-                <DescriptionOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
-              ),
-            }}
-          />
-
-          <FormInputField
-            name="review"
-            label="Review"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: (
-                <ReviewsOutlined sx={{ margin: "0px 10px 0px 0px" }} />
-              ),
-              readOnly: true,
-            }}
-          />
-
-          <FormInputField
-            name="totalReviews"
-            label="Total number of reviews"
-            errorobj={errors}
-            style={{
-              width: "300px",
-              marginRight: "20px",
-              marginBottom: "20px",
-              color: "black",
-              backgroundColor: "transparent",
-            }}
-            InputProps={{
-              startAdornment: (
-                <ReviewsOutlined sx={{ margin: "0px 10px 0px 0px" }} />
-              ),
-              readOnly: true,
-            }}
-          />
-        <Box sx={{ display: "flex" }}>
-          <Button
-              onClick={handleSubmit((data) => submitHandler(data))}
-              sx={{
-                display: "flex",
-                width: 70,
-                margin: "10px 10px 0 0",
+            <FormInputField
+              name="name"
+              label="Name"
+              errorobj={errors}
+              style={{
+                width: "300px",
+                marginRight: "20px",
+                marginBottom: "20px",
+                marginTop: "30px",
+                color: "black",
+                backgroundColor: "transparent",
               }}
-              type="submit"
-              variant="outlined"
-            >
-              Save
-          </Button>
+              InputProps={{
+                startAdornment: (
+                  <ChairOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
+                ),
+              }}
+            />
+            <Box sx={{ display: "flex" }}>
+              <FormSelect
+                name="category"
+                label="Category"
+                errorobj={errors}
+                options={categories}
+                style={{
+                  width: "300px",
+                  marginRight: "20px",
+                  marginBottom: "20px",
+                  color: "black",
+                  backgroundColor: "transparent",
+                }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <CategoryOutlinedIcon />
+                  </InputAdornment>
+                }
+              />
+            </Box>
 
-          {product && 
-              ( <Button
-                onClick={handleDelete}
+            <Box sx={{ display: "flex" }}>
+              <FormSelect
+                name="subcategory"
+                label="Subcategory"
+                errorobj={errors}
+                options={subcategories}
+                style={{
+                  width: "300px",
+                  marginRight: "20px",
+                  marginBottom: "20px",
+                  color: "black",
+                  backgroundColor: "transparent",
+                }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <CategoryOutlinedIcon />
+                  </InputAdornment>
+                }
+              />
+            </Box>
+
+            <FormInputField
+              name="quantity"
+              label="Quantity"
+              errorobj={errors}
+              style={{
+                width: "300px",
+                marginRight: "20px",
+                marginBottom: "20px",
+                color: "black",
+                backgroundColor: "transparent",
+              }}
+              InputProps={{
+                startAdornment: (
+                  <Inventory2OutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
+                ),
+              }}
+            />
+
+            <FormInputField
+              name="price"
+              label="Price"
+              errorobj={errors}
+              style={{
+                width: "300px",
+                marginRight: "20px",
+                marginBottom: "20px",
+                color: "black",
+                backgroundColor: "transparent",
+              }}
+              InputProps={{
+                startAdornment: <EuroIcon sx={{ margin: "0px 10px 0px 0px" }} />,
+              }}
+            />
+
+            {/* <label
+              htmlFor="file-upload"
+              style={{
+                width: "200px",
+                height: "57px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                marginTop: "10px",
+                justifyContent: "center",
+                color: "gray",
+                border: "1px solid lightgray",
+                borderWidth: "thin",
+                borderRadius: "5px",
+              }}
+            >
+              Add Images
+            </label>
+
+            <input
+              style={{ display: "none" }}
+              type="file"
+              name="productImages"
+              id="file-upload"
+              multiple
+              onChange={(event) => {
+                //   setImagesFiles((oldArray) => [...oldArray, ...event.target.files]);
+                console.log("Uploaded image!", event.target.value);
+              }}
+            /> */}
+
+            <FormInputField
+              name="description"
+              label="Description"
+              errorobj={errors}
+              style={{
+                width: "300px",
+                marginRight: "20px",
+                marginBottom: "20px",
+                color: "black",
+                backgroundColor: "transparent",
+              }}
+              InputProps={{
+                startAdornment: (
+                  <DescriptionOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
+                ),
+              }}
+            />
+
+            <FormInputField
+              name="review"
+              label="Review"
+              errorobj={errors}
+              style={{
+                width: "300px",
+                marginRight: "20px",
+                marginBottom: "20px",
+                color: "black",
+                backgroundColor: "transparent",
+              }}
+              InputProps={{
+                startAdornment: (
+                  <ReviewsOutlined sx={{ margin: "0px 10px 0px 0px" }} />
+                ),
+                readOnly: true,
+              }}
+            />
+
+            <FormInputField
+              name="totalReviews"
+              label="Total number of reviews"
+              errorobj={errors}
+              style={{
+                width: "300px",
+                marginRight: "20px",
+                marginBottom: "20px",
+                color: "black",
+                backgroundColor: "transparent",
+              }}
+              InputProps={{
+                startAdornment: (
+                  <ReviewsOutlined sx={{ margin: "0px 10px 0px 0px" }} />
+                ),
+                readOnly: true,
+              }}
+            />
+          <Box sx={{ display: "flex" }}>
+            <Button
+                onClick={handleSubmit((data) => submitHandler(data))}
                 sx={{
                   display: "flex",
                   width: 70,
                   margin: "10px 10px 0 0",
-                  backgroundColor: "red" + "!important",
-                  borderColor: "white",
-                  color: "white"
+                }}
+                type="submit"
+                variant="outlined"
+              >
+                Save
+            </Button>
+
+            {product && 
+                ( <Button
+                  onClick={handleDelete}
+                  sx={{
+                    display: "flex",
+                    width: 70,
+                    margin: "10px 10px 0 0",
+                    backgroundColor: "red" + "!important",
+                    borderColor: "white",
+                    color: "white"
+                  }}
+                  variant="outlined"
+                >
+                  Delete
+                </Button> )}
+
+              <Button
+                onClick={() => navigate(-1)}
+                sx={{
+                  display: "flex",
+                  width: 70,
+                  margin: "10px 10px 0 0",
                 }}
                 variant="outlined"
               >
-                Delete
-              </Button> )}
-
-            <Button
-              onClick={() => navigate(-1)}
-              sx={{
-                display: "flex",
-                width: 70,
-                margin: "10px 10px 0 0",
-              }}
-              variant="outlined"
-            >
-              Cancel
-            </Button>
-            
-          </Box>
-
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {product?.id === undefined ? 
-                "Product successfully added" :
-                isUpdate === true ?
-                "Product successfully updated" :
-                "Product successfully deleted"}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} autoFocus>
-                OK
+                Cancel
               </Button>
-            </DialogActions>
-          </Dialog>
-        </Box>
-      </form>
-    </FormProvider>
+              
+            </Box>
+
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {product?.id === undefined ? 
+                  "Product successfully added" :
+                  isUpdate === true ?
+                  "Product successfully updated" :
+                  "Product successfully deleted"}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} autoFocus>
+                  OK
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </form>
+      </FormProvider>
+    )
   );
 };
 
