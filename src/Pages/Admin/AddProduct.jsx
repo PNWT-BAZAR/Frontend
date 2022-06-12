@@ -402,7 +402,6 @@ const AddProduct = (props) => {
                 Save
             </Button>
 
-<<<<<<< HEAD
             {product && 
                 ( <Button
                   onClick={handleDelete}
@@ -421,11 +420,6 @@ const AddProduct = (props) => {
 
               <Button
                 onClick={() => navigate(-1)}
-=======
-            {product && (
-              <Button
-                onClick={handleDelete}
->>>>>>> b5b35d0ed0b573bca8d3f9ee349c75e955c309f3
                 sx={{
                   display: "flex",
                   width: 70,
@@ -433,7 +427,6 @@ const AddProduct = (props) => {
                 }}
                 variant="outlined"
               >
-<<<<<<< HEAD
                 Cancel
               </Button>
               
@@ -444,21 +437,6 @@ const AddProduct = (props) => {
               onClose={handleClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
-=======
-                Delete
-              </Button>
-            )}
-
-            <Button
-              onClick={handleSubmit((data) => submitHandler(data))}
-              sx={{
-                display: "flex",
-                width: 70,
-                margin: "10px 0 0 0",
-              }}
-              type="submit"
-              variant="outlined"
->>>>>>> b5b35d0ed0b573bca8d3f9ee349c75e955c309f3
             >
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -476,37 +454,9 @@ const AddProduct = (props) => {
               </DialogActions>
             </Dialog>
           </Box>
-<<<<<<< HEAD
         </form>
       </FormProvider>
     )
-=======
-
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {product?.id === undefined
-                  ? "Product successfully added"
-                  : isUpdate === true
-                  ? "Product successfully updated"
-                  : "Product successfully deleted"}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} autoFocus>
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Box>
-      </form>
-    </FormProvider>
->>>>>>> b5b35d0ed0b573bca8d3f9ee349c75e955c309f3
   );
 };
 
