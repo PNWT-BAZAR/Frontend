@@ -22,7 +22,6 @@ const schema = yup.object().shape({
     .string()
     .required("Email is required!")
     .email("E-mail is not valid!"),
-  shippingAddres: yup.string().required("Shipping address is required!"),
   username: yup
     .string()
     .required("Username is required")
@@ -39,7 +38,7 @@ const schema = yup.object().shape({
     .matches(/^[+]?\d{9,15}$/, "Phone number has to contain 9 to 15 digits!"),
 });
 
-const Register = () => {
+const Register = ({ handleChange }) => {
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -60,8 +59,6 @@ const Register = () => {
   } = methods;
 
   const submitHandler = async (data) => {
-    //encrypt and login method
-    console.log("DATA", data);
     const user = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -69,12 +66,15 @@ const Register = () => {
       password: data.password,
       email: data.email,
       phoneNumber: data.phoneNumber,
-      shippingAddres: data.shippingAddres,
+      shippingAddress: data.shippingAddress,
       role: "USER",
     };
+    console.log("USER", user);
     const result = await API.post("/identity/users/signup", user);
-    console.log("Signup result", result);
-    // localStorage.setItem("access_token", result?.headers?.authorization);
+    console.log(result?.data?.object);
+    if (result?.data?.object != null) {
+      handleChange("event", 0);
+    }
   };
 
   return (
