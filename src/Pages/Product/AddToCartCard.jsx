@@ -15,7 +15,7 @@ const AddToCartCard = (props) => {
       setShipping(20);
     }
     if (quantity > 0) {
-      setTotalPrice(quantity * product.price + shipping);
+      setTotalPrice((quantity * product.price + shipping).toFixed(2));
     } else if (quantity === 0) {
       setTotalPrice(0);
     }

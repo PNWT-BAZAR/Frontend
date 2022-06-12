@@ -59,6 +59,7 @@ export const ProductCard = (props) => {
             sx={{
               display: "flex",
               height: "40%",
+              margin: "0px 10px 0px 10px",
               flexDirection: "column",
               justifyContent: "space-evenly",
               alignItems: "center",

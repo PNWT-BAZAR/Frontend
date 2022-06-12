@@ -4,9 +4,13 @@ import { COLORS } from "../values/colors";
 const ProductDescription = (props) => {
   const product = props.product;
   const review =
-    product.reviewScore > 0
-      ? String("Customer review: " + product.reviewScore + "/5!")
-      : "No reviews yet!";
+    product?.totalReviews === 0
+      ? "No reviews yet!"
+      : String(
+          "Customer review: " +
+            (product?.reviewSum / product?.totalReviews).toFixed(1) +
+            "/5!"
+        );
 
   return (
     <Paper

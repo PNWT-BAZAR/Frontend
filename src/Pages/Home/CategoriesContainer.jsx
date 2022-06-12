@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import API from "../../api/API";
-import { dummyCategories } from "../../sampleItems/dummyCategories";
 import CategoryCard from "./CategoryCard";
 import { useNavigate } from "react-router-dom";
+import StyledLink from "../Layout/StyledLink";
 
 const CategoriesContainer = () => {
   const navigate = useNavigate();
@@ -30,13 +30,16 @@ const CategoriesContainer = () => {
         justifyContent: "space-evenly",
       }}
     >
-      {categories?.map((cat) => {
+      {categories?.map((category) => {
         return (
-          <CategoryCard
-            key={cat?.id}
-            category={cat}
-            onClick={() => navigate(`/category/${cat.id}`)}
-          />
+          <StyledLink
+            to={{
+              pathname: `/category`,
+              search: "?categoryId=" + category?.id,
+            }}
+          >
+            <CategoryCard key={category?.id} category={category} />
+          </StyledLink>
         );
       })}
     </Box>

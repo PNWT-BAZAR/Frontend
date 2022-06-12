@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MenuItemContextProvider } from "./shared/contexts/MenuItemContext";
 import reportWebVitals from "./reportWebVitals";
@@ -53,10 +52,10 @@ root.render(
             }
           />
           <Route
-            path="/category/:id"
+            path="/category"
             element={
               // <Layout>
-              <CategoryView />
+              <CategoryView/>
               // </Layout>
             }
           />

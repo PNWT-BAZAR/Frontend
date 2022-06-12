@@ -54,17 +54,17 @@ const schema = yup.object().shape({
     .required("Please provide a quantity.")
     .min(1, "Quantity must be greater than 0")
     .max(99999, "Too much!"),
-  
-    category: yup.string().required("Category is required!"),
-    subcategory: yup.string().required("Subcategory is required!")
+
+  category: yup.string().required("Category is required!"),
+  subcategory: yup.string().required("Subcategory is required!"),
 });
 
 const AddProduct = (props) => {
   const navigate = useNavigate();
 
   const { state } = useLocation();
-  const product = state?.product
-  
+  const product = state?.product;
+
   const [filteredData, setFilteredData] = useState();
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -81,27 +81,29 @@ const AddProduct = (props) => {
       quantity: product?.quantity ?? 0,
       category: product?.category?.id,
       subcategory: product?.subcategory?.id,
-      review: product?.totalReviews > 0 ? 
-        product?.reviewSum / product?.totalReviews : "",
-      totalReviews: product?.totalReviews ?? 0
+      review:
+        product?.totalReviews > 0
+          ? (product?.reviewSum / product?.totalReviews).toFixed(1)
+          : "",
+      totalReviews: product?.totalReviews ?? 0,
     },
   });
 
   const {
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = methods;
 
   const submitHandler = async (data) => {
     data.category = {
-      id: data.category
-    }
+      id: data.category,
+    };
     data.subcategory = {
-      id: data.subcategory
-    }
+      id: data.subcategory,
+    };
 
     //update product
-    if(product !== undefined){
+    if (product !== undefined) {
       setIsUpdate(true);
       data.id = product.id;
       await API.put("/inventory/products", data);
@@ -114,19 +116,18 @@ const AddProduct = (props) => {
     //create product
     data.totalReviews = 0;
     data.reviewSum = 0;
-    const result = await API.post("/inventory/products", data).then((result)=>{
-      
-      console.log(result?.status)
-      console.log(result)
-      if(result?.status === 200){
-        console.log("test");
-        // setIsProductCreated(false);
-      }
-
-      
-    }).catch((error)=>{
-      console.log(error);
-    });
+    const result = await API.post("/inventory/products", data)
+      .then((result) => {
+        console.log(result?.status);
+        console.log(result);
+        if (result?.status === 200) {
+          console.log("test");
+          // setIsProductCreated(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // console.log(isProductCreated);
     handleClickOpen();
   };
@@ -134,7 +135,6 @@ const AddProduct = (props) => {
   const productId = window.location.pathname.split("/").at(-1);
 
   console.log("Product id is " + productId);
-
 
   //const [selectedCategory, setSelectedCategory] = useState();
 
@@ -186,12 +186,12 @@ const AddProduct = (props) => {
   const handleDelete = () => {
     console.log("DELETING" + product.id);
     setIsUpdate(false);
-    const result = API.delete("/inventory/products/"+product?.id).then(()=>{
+    const result = API.delete("/inventory/products/" + product?.id).then(() => {
       handleClickOpen();
     });
     console.log(result);
     //handleClickOpen();
-  }
+  };
 
   return (
     categories && subcategories && (
@@ -402,6 +402,7 @@ const AddProduct = (props) => {
                 Save
             </Button>
 
+<<<<<<< HEAD
             {product && 
                 ( <Button
                   onClick={handleDelete}
@@ -420,6 +421,11 @@ const AddProduct = (props) => {
 
               <Button
                 onClick={() => navigate(-1)}
+=======
+            {product && (
+              <Button
+                onClick={handleDelete}
+>>>>>>> b5b35d0ed0b573bca8d3f9ee349c75e955c309f3
                 sx={{
                   display: "flex",
                   width: 70,
@@ -427,6 +433,7 @@ const AddProduct = (props) => {
                 }}
                 variant="outlined"
               >
+<<<<<<< HEAD
                 Cancel
               </Button>
               
@@ -437,6 +444,21 @@ const AddProduct = (props) => {
               onClose={handleClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
+=======
+                Delete
+              </Button>
+            )}
+
+            <Button
+              onClick={handleSubmit((data) => submitHandler(data))}
+              sx={{
+                display: "flex",
+                width: 70,
+                margin: "10px 0 0 0",
+              }}
+              type="submit"
+              variant="outlined"
+>>>>>>> b5b35d0ed0b573bca8d3f9ee349c75e955c309f3
             >
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -454,9 +476,37 @@ const AddProduct = (props) => {
               </DialogActions>
             </Dialog>
           </Box>
+<<<<<<< HEAD
         </form>
       </FormProvider>
     )
+=======
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {product?.id === undefined
+                  ? "Product successfully added"
+                  : isUpdate === true
+                  ? "Product successfully updated"
+                  : "Product successfully deleted"}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} autoFocus>
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+      </form>
+    </FormProvider>
+>>>>>>> b5b35d0ed0b573bca8d3f9ee349c75e955c309f3
   );
 };
 
