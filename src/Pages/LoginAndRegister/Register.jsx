@@ -11,24 +11,28 @@ import FormInputField from "../../shared/controls/FormInput/FormInputField";
 import API from "../../api/API";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useState, useEffect } from "react";
 import { COLORS } from "../values/colors";
 
 const schema = yup.object().shape({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
-  shippingAddress: yup.string().required("Shipping address is required"),
+  firstName: yup.string().required("First name is required!"),
+  lastName: yup.string().required("Last name is required!"),
+  shippingAddress: yup.string().required("Shipping address is required!"),
   email: yup
     .string()
-    .required("Email is required")
+    .required("Email is required!")
     .email("E-mail is not valid!"),
-  shippingAddres: yup.string().required("Shipping address is required"),
+  shippingAddres: yup.string().required("Shipping address is required!"),
   username: yup
     .string()
     .required("Username is required")
     .min(8, "Username must contain at least 8 characters!")
     .max(15, "Username cannot be longer than 15 characters!"),
-  password: yup.string().required("Password is required"),
-  confirmPassword: yup.string().required("You must confirm your password!"),
+  password: yup.string().required("Password is required!"),
+  confirmPassword: yup
+    .string()
+    .required("You must confirm your password!")
+    .oneOf([yup.ref("password"), null], "Passwords do not match!"),
   phoneNumber: yup
     .string()
     .required("Phone number is required!")
