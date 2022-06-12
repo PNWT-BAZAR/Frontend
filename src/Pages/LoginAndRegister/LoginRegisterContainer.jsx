@@ -81,7 +81,7 @@ const LoginRegister = () => {
             <Login handleChange={handleChange} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Register />
+            <Register handleChange={handleChange} />
           </TabPanel>
         </Paper>
       </Grid>
