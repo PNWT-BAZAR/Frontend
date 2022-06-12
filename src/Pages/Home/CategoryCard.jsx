@@ -15,6 +15,7 @@ const CategoryCard = (props) => {
     &:hover {
       background-color: ${COLORS.primaryColor};
       color: white;
+      font-size: 40px;
     }
   `;
 
