@@ -1,4 +1,3 @@
-import { dummyCategories } from "../../sampleItems/dummyCategories";
 import { useState, useEffect } from "react";
 import { COLORS } from "../values/colors";
 import styled from "styled-components";
@@ -7,10 +6,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StyledLink from "./StyledLink";
 import API from "../../api/API";
+import { useData } from "../../shared/contexts/MenuItemContext";
+import Dropdown from "./Dropdown";
 
 const Navbar = () => {
   useEffect(() => {}, []);
 
+  const { data, setValues } = useData();
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     const fetchCategories = async () => {
@@ -168,6 +170,13 @@ const Navbar = () => {
     }
   `;
 
+  const DropDownContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  `;
+
   return (
     <Container>
       <ColumnWrapper>
@@ -208,12 +217,17 @@ const Navbar = () => {
             categories.map((category) => {
               return (
                 <MenuItem
-                  // onMouseEnter={() => {
-                  //   setValues({ showDropdown: true, category: category });
-                  // }}
-                  // onMouseOut={() => {
-                  //   setValues({ showDropdown: false });
-                  // }}
+                  onMouseEnter={async () => {
+                    let subcategories = []
+                      const result = await API.get(
+                        `/inventory/subcategories/search?categoryId=${category?.id}`
+                      );
+                      subcategories = result?.data?.objectsList;
+                    setValues({ showDropdown: true, category: category, subcategories: subcategories });
+                  }}
+                  onMouseOut={() => {
+                    setValues({ showDropdown: false });
+                  }}
                   key={category.id}
                 >
                   {category.label}
@@ -221,6 +235,11 @@ const Navbar = () => {
               );
             })}
         </CategoriesNavigation>
+        <DropDownContainer>
+          {data?.showDropdown && !data?.showSearchDropdown && (
+            <Dropdown />
+          )}
+        </DropDownContainer>
       </ColumnWrapper>
     </Container>
   );

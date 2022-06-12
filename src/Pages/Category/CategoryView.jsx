@@ -16,27 +16,23 @@ import {
   ListItemText,
 } from "@mui/material";
 
-import { dummySubcategories } from "../../sampleItems/dummySubcategories";
-import { dummyCategories } from "../../sampleItems/dummyCategories";
-import { dummyProducts } from "../../sampleItems/dummyProducts";
-
 import { ProductCard } from "../Home/ProductCard";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "../Layout/Layout";
+import StyledLink from "../Layout/StyledLink";
 
 const drawerWidth = "15vw";
 
-export default function CategoryView() {
+export default function CategoryView(props) {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const categoryId = window.location.pathname.substring(
-    window.location.pathname.lastIndexOf("/") + 1
-  );
+  const categoryId = searchParams.get("categoryId");
+  const subcategoryId = searchParams.get("subcategoryId");
   const [category, setCategory] = useState();
   const [subcategories, setSubcategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const [subcategoryId, setSubcategoryId] = useState("");
   useEffect(() => {
     const fetchCategory = async () => {
       const result = await API.get("/inventory/categories/" + categoryId);
@@ -64,7 +60,7 @@ export default function CategoryView() {
     fetchCategory();
     fetchSubcategories();
     fetchProducts();
-  }, [subcategoryId]);
+  }, [subcategoryId, categoryId, searchParams]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -90,25 +86,31 @@ export default function CategoryView() {
           variant="h4"
           alignSelf="center"
           marginTop={5}
-          onClick={(e) => setSubcategoryId("")}
         >
           {category?.name}
         </Typography>
         <Divider />
         <List>
           {subcategories?.map((subcategory) => (
-            <ListItem
-              key={subcategory?.id}
-              disablePadding
-              onClick={(e) => setSubcategoryId(subcategory?.id)}
+            <StyledLink
+              to={{
+                pathname: `/category`,
+                search:
+                  "?categoryId=" +
+                  categoryId +
+                  "&subcategoryId=" +
+                  subcategory?.id,
+              }}
             >
-              <ListItemButton>
-                <ListItemIcon>
-                  <ArrowForwardIosIcon />
-                </ListItemIcon>
-                <ListItemText primary={subcategory?.name} />
-              </ListItemButton>
-            </ListItem>
+              <ListItem key={subcategory?.id} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <ArrowForwardIosIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={subcategory?.name} />
+                </ListItemButton>
+              </ListItem>
+            </StyledLink>
           ))}
         </List>
       </Drawer>
