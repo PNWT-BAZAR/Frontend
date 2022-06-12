@@ -22,7 +22,7 @@ const schema = yup.object().shape({
     .string()
     .required("Email is required!")
     .email("E-mail is not valid!"),
-  shippingAddres: yup.string().required("Shipping address is required!"),
+  shippingAddress: yup.string().required("Shipping address is required!"),
   username: yup
     .string()
     .required("Username is required")
