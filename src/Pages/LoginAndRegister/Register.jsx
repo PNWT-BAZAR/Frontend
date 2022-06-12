@@ -11,7 +11,6 @@ import FormInputField from "../../shared/controls/FormInput/FormInputField";
 import API from "../../api/API";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useState, useEffect } from "react";
 import { COLORS } from "../values/colors";
 
 const schema = yup.object().shape({
