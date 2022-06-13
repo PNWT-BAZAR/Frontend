@@ -68,12 +68,12 @@ const Cart = () => {
 
   const onDelete = (product)=>{
     console.log("onDelete");
-    let cartProductIndex = cartArray.findIndex(cartElement => cartElement[0] === product?.productId);
-    console.log(cartProductIndex);
-    console.log(cartArray);
-    cartArray.splice(cartProductIndex, 1);
-    let productIndexInCart = cartProducts.indexOf(product);
-    cartProducts.splice(productIndexInCart, 1);
+    // let cartProductIndex = cartArray.findIndex(cartElement => cartElement[0] === product?.productId);
+    // console.log(cartProductIndex);
+    // console.log(cartArray);
+    // cartArray.splice(cartProductIndex, 1);
+    // let productIndexInCart = cartProducts.indexOf(product);
+    // cartProducts.splice(productIndexInCart, 1);
   }
 
 
