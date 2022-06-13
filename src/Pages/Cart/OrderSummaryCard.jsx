@@ -9,9 +9,65 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material";
+import API from "../../api/API";
+import jwt from 'jwt-decode'
+
+
 
 const OrderSummaryCard = (props) => {
+  const { cartProducts } = props;
   const [open, setOpen] = React.useState(false);
+
+  var cartArrayJson = localStorage.getItem('cart');
+  var cartArray;
+  if (!cartArrayJson) {
+      cartArray = [];
+  } else {
+      cartArray = JSON.parse(cartArrayJson);
+  }
+
+  const handleOrderCreate = () => {
+    var params = new URLSearchParams([
+      ["username", jwt(localStorage.getItem("access_token"))?.sub]
+    ]);
+    API.get("/identity/users/username", {params}).then((result) => {
+      console.log("Found user")
+      console.log(result?.data?.object);
+      let user = result?.data?.object;
+
+      let newOrder = {
+        user: {
+          id: user.id
+        },
+        createdAt: new Date(),
+        orderStatus: "PENDING"
+      }
+      API.post("/order/orders", newOrder).then((result2)=>{
+        for (const cartProduct of cartProducts) {
+          console.log("Creating new product");
+          console.log(cartProduct);
+          let cartProductIndex = cartArray.findIndex(cartElement => cartElement[0] === cartProduct.id);
+          let newOrderItem = {
+            product:{
+              id: cartProduct.id
+            },
+            order:{
+              id: result2?.data?.object?.id
+            },
+            reviewedOrder: false,
+            quantity: cartArray[cartProductIndex][1]
+          }
+          API.post("/order/orderItems", newOrderItem);
+        }
+
+        handleClickOpen();
+      });
+
+    });
+
+
+    
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,7 +111,7 @@ const OrderSummaryCard = (props) => {
         <br />
       </CardContent>
       <Button
-        onClick={handleClickOpen}
+        onClick={handleOrderCreate}
         type="submit"
         sx={{ padding: 1, minWidth: "25%", margin: "10px auto" }}
         variant="outlined"
