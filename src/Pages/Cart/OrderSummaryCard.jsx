@@ -26,6 +26,11 @@ const OrderSummaryCard = (props) => {
       cartArray = JSON.parse(cartArrayJson);
   }
 
+  const clearCartAndReroute = () => {
+    localStorage.removeItem("cart");
+    window.location.href = "/";
+  }
+
   const handleOrderCreate = () => {
     var params = new URLSearchParams([
       ["username", jwt(localStorage.getItem("access_token"))?.sub]
@@ -74,6 +79,7 @@ const OrderSummaryCard = (props) => {
   };
 
   const handleClose = () => {
+    clearCartAndReroute();
     setOpen(false);
   };
 
