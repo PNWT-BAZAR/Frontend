@@ -66,6 +66,16 @@ const Cart = () => {
     localStorage.setItem('cart', JSON.stringify(cartArray));
 }
 
+  const onDelete = (product)=>{
+    console.log("onDelete");
+    let cartProductIndex = cartArray.findIndex(cartElement => cartElement[0] === product?.productId);
+    console.log(cartProductIndex);
+    console.log(cartArray);
+    cartArray.splice(cartProductIndex, 1);
+    let productIndexInCart = cartProducts.indexOf(product);
+    cartProducts.splice(productIndexInCart, 1);
+  }
+
 
   return (
     cartProducts && (
@@ -90,7 +100,7 @@ const Cart = () => {
             // {
             //   totalPrice = totalPrice + cartProduct.price * cartProduct.quantity;
             // }
-            return <CartProductCard key={cartProduct.id} product={cartProduct} onQuantityChanged={setQuantity}/>;
+            return <CartProductCard key={cartProduct.id} product={cartProduct} onQuantityChanged={setQuantity} onDelete={onDelete}/>;
           })}
         </Grid>
         <Grid

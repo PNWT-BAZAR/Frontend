@@ -1,4 +1,7 @@
-import { Paper, Typography, Box, IconButton, Button } from "@mui/material";
+import { Paper, Typography, Box, IconButton, Button, Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText, } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -8,6 +11,7 @@ const AddToCartCard = (props) => {
   const [quantity, setQuantity] = useState(0);
   const [shipping, setShipping] = useState(20);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [open, setOpen] = useState();
 
   useEffect(() => {
     if (quantity > 0 && quantity * product.price > 100) {
@@ -47,6 +51,17 @@ const AddToCartCard = (props) => {
         cart.set(product.id, cartProductQuantity + quantity);
     }
     localStorage.setItem('cart', JSON.stringify(Array.from(cart.entries())));
+
+    handleClickOpen();
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    //navigate(-1);
   };
 
   return (
@@ -127,6 +142,24 @@ const AddToCartCard = (props) => {
       >
         Add To Cart
       </Button>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Product successfully added to cart
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };
