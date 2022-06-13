@@ -1,8 +1,17 @@
 import React from "react";
 
-import { Button, Link, Typography } from "@mui/material";
+import {
+  Button,
+  Link,
+  Typography,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+} from "@mui/material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useState } from "react";
 
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,11 +43,24 @@ const Login = ({ handleChange }) => {
     formState: { errors },
   } = methods;
 
+  // const [open, setOpen] = useState(false);
+
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
+
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+
   const submitHandler = async (data) => {
     //encrypt and login method
     const result = await API.post("/identity/users/login", data);
     const decodedJwt = jwt(result?.headers?.authorization);
     const userRole = decodedJwt?.authorities[0];
+    // if (result?.headers?.authorization === undefined) {
+    //   handleClickOpen();
+    // }
     localStorage.setItem("access_token", result?.headers?.authorization);
     if (userRole === "ROLE_ADMIN") {
       window.location.href = "/admin";
@@ -141,6 +163,23 @@ const Login = ({ handleChange }) => {
             Register now!
           </Link>
         </Typography>
+        {/* <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Incorrect username or password!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog> */}
       </Box>
     </FormProvider>
   );

@@ -73,7 +73,9 @@ const RatingCard = (props) => {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Thank you for taking the time to leave us a review for{" "}
-              {product?.name}!
+              {product?.name}! Your satisfaction is our priority, and as
+              affirmed by customer reviews, we pride ourselves on our
+              exceptional product quality.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
