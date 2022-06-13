@@ -6,34 +6,36 @@ import ProductImage from "./ProductImage";
 import { useState, useEffect } from "react";
 import API from "../../api/API";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import RatingCard from "./RatingCard";
 
 const ProductView = () => {
   const [product, setProduct] = useState();
   const [productImages, setProductImages] = useState([]);
-  useEffect(() => {
-    const productId = window.location.pathname.substring(
-      window.location.pathname.lastIndexOf("/")
+
+  const productId = window.location.pathname.substring(
+    window.location.pathname.lastIndexOf("/")
+  );
+  const fetchProduct = async () => {
+    const result = await API.get("/inventory/products" + productId);
+    const prod = result?.data?.object;
+    console.log("PRODUCT:", prod);
+    setProduct(prod);
+  };
+  const fetchProductImages = async () => {
+    const result1 = await API.get(
+      "/inventory/productImages/product" + productId
     );
-    const fetchProduct = async () => {
-      const result = await API.get("/inventory/products" + productId);
-      const prod = result?.data?.object;
-      setProduct(prod);
-    };
-
-    const fetchProductImages = async () => {
-      const result1 = await API.get(
-        "/inventory/productImages/product" + productId
-      );
-      const array = [];
-      result1?.data?.objectsList?.forEach((element) => {
-        array.push({
-          id: element.id,
-          url: element.url,
-        });
+    const array = [];
+    result1?.data?.objectsList?.forEach((element) => {
+      array.push({
+        id: element.id,
+        url: element.url,
       });
-      setProductImages(array);
-    };
+    });
+    setProductImages(array);
+  };
 
+  useEffect(() => {
     fetchProduct();
     fetchProductImages();
   }, []);
@@ -95,8 +97,14 @@ const ProductView = () => {
           <Grid item sx={{ height: "70vh", width: "550px" }}>
             <ProductDescription key={product?.id} product={product} />
           </Grid>
-          <Grid item sx={{ height: "50vh", width: "350px" }}>
+          <Grid
+            item
+            sx={{ height: "50vh", width: "350px", flexDirection: "column" }}
+          >
             <AddToCartCard key={product?.id} product={product} />
+            {localStorage.access_token && (
+              <RatingCard fetchProduct={fetchProduct} product={product} />
+            )}
           </Grid>
         </Grid>
       )}
