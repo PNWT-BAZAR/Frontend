@@ -14,7 +14,6 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import { useLocation } from "react-router-dom";
 import { COLORS } from "../values/colors";
 
-
 import {
   Box,
   FormControl,
@@ -156,9 +155,7 @@ const AddProduct = (props) => {
     setSelectedCategory(selectedCategory);
   };
 
-  const changeSelectedSubcategoryHandler = (
-    selectedSubcategory
-  ) => {
+  const changeSelectedSubcategoryHandler = (selectedSubcategory) => {
     setSelectedSubcategory(selectedSubcategory);
   };
 
@@ -188,12 +185,9 @@ const AddProduct = (props) => {
       setSubcategories(array);
     };
 
-    
-
     fetchCategories();
     fetchSubcategories();
   }, [selectedCategory, selectedSubcategory]);
-
 
   // useEffect(() => {
   //   const fetchSubcategoriesByCategory = async (searchParams) => {
@@ -238,7 +232,8 @@ const AddProduct = (props) => {
   };
 
   return (
-    categories && subcategories && (
+    categories &&
+    subcategories && (
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit((data) => submitHandler(data))}>
           <Box
@@ -344,7 +339,9 @@ const AddProduct = (props) => {
                 backgroundColor: "transparent",
               }}
               InputProps={{
-                startAdornment: <EuroIcon sx={{ margin: "0px 10px 0px 0px" }} />,
+                startAdornment: (
+                  <EuroIcon sx={{ margin: "0px 10px 0px 0px" }} />
+                ),
               }}
             />
 
@@ -392,7 +389,9 @@ const AddProduct = (props) => {
               }}
               InputProps={{
                 startAdornment: (
-                  <DescriptionOutlinedIcon sx={{ margin: "0px 10px 0px 0px" }} />
+                  <DescriptionOutlinedIcon
+                    sx={{ margin: "0px 10px 0px 0px" }}
+                  />
                 ),
               }}
             />
@@ -434,8 +433,8 @@ const AddProduct = (props) => {
                 readOnly: true,
               }}
             />
-          <Box sx={{ display: "flex" }}>
-            <Button
+            <Box sx={{ display: "flex" }}>
+              <Button
                 onClick={handleSubmit((data) => submitHandler(data))}
                 sx={{
                   display: "flex",
@@ -446,10 +445,10 @@ const AddProduct = (props) => {
                 variant="outlined"
               >
                 Save
-            </Button>
+              </Button>
 
-            {product && 
-                ( <Button
+              {product && (
+                <Button
                   onClick={handleDelete}
                   sx={{
                     display: "flex",
@@ -457,12 +456,13 @@ const AddProduct = (props) => {
                     margin: "10px 10px 0 0",
                     backgroundColor: "red" + "!important",
                     borderColor: "white",
-                    color: "white"
+                    color: "white",
                   }}
                   variant="outlined"
                 >
                   Delete
-                </Button> )}
+                </Button>
+              )}
 
               <Button
                 onClick={() => navigate(-1)}
@@ -475,7 +475,6 @@ const AddProduct = (props) => {
               >
                 Cancel
               </Button>
-              
             </Box>
 
             <Dialog
@@ -486,11 +485,11 @@ const AddProduct = (props) => {
             >
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  {product?.id === undefined ? 
-                  "Product successfully added" :
-                  isUpdate === true ?
-                  "Product successfully updated" :
-                  "Product successfully deleted"}
+                  {product?.id === undefined
+                    ? "Product successfully added"
+                    : isUpdate === true
+                    ? "Product successfully updated"
+                    : "Product successfully deleted"}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>

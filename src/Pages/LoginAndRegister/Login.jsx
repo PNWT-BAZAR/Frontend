@@ -13,7 +13,7 @@ import FormInputField from "../../shared/controls/FormInput/FormInputField";
 import { COLORS } from "../values/colors";
 import API from "../../api/API";
 
-import jwt from 'jwt-decode'
+import jwt from "jwt-decode";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -37,18 +37,13 @@ const Login = ({ handleChange }) => {
   const submitHandler = async (data) => {
     //encrypt and login method
     const result = await API.post("/identity/users/login", data);
-    console.log("Login result", result);
-    console.log("Decoded");
     const decodedJwt = jwt(result?.headers?.authorization);
-    console.log(decodedJwt);
     const userRole = decodedJwt?.authorities[0];
     localStorage.setItem("access_token", result?.headers?.authorization);
-    if(userRole === "ROLE_ADMIN"){
-      console.log("admin je u pitanju");
+    if (userRole === "ROLE_ADMIN") {
       window.location.href = "/admin";
-    }else{
-      console.log("user je u pitanju");
-      //window.location.href = "/";
+    } else {
+      window.location.href = "/";
     }
   };
 
