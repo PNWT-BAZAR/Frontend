@@ -17,11 +17,12 @@ const Dashboard = () => {
     };
     fetchAllUsers();
 
-    // const fetchTotalProfit = async () => {
-    //   const result = await API.get("order", {});
-    //   setTotalProfit(result?.data?.objectsList);
-    // };
-    // fetchTotalProfit();
+    const fetchTotalProfit = async () => {
+      const result = await API.get("order/orders/price", {});
+      console.log(result?.data);
+      setTotalProfit(result?.data);
+    };
+    fetchTotalProfit();
 
     const fetchProducts = async () => {
       const result = await API.get("inventory/products", {});
@@ -29,34 +30,37 @@ const Dashboard = () => {
     };
     fetchProducts();
 
-    // const fetchOrders = async () => {
-    //   const result = await API.get("order", {});
-    //   setOrders(result?.data?.objectsList);
-    // };
-    // fetchOrders();
+    const fetchOrders = async () => {
+      const result = await API.get("order/orders", {});
+      console.log(result?.data?.objectsList.length)
+      setOrders(result?.data?.objectsList.length);
+    };
+    fetchOrders();
   }, []);
 
   return (
-    <Grid
-      container
-      direction="row"
-      alignItems={"center"}
-      display={"flex"}
-      justifyContent="space-evenly"
-    >
-      <DashboardCard
-        card={{ title: "Total users", value: users.length }}
-      ></DashboardCard>
-      {/* <DashboardCard
-        card={{ title: "Total profit", value: totalProfit }}
-      ></DashboardCard> */}
-      <DashboardCard
-        card={{ title: "Total products", value: products.length }}
-      ></DashboardCard>
-      {/* <DashboardCard
-        card={{ title: "Total orders", value: orders.length }}
-      ></DashboardCard> */}
-    </Grid>
+    users && totalProfit && products && orders && (
+      <Grid
+        container
+        direction="row"
+        alignItems={"center"}
+        display={"flex"}
+        justifyContent="space-evenly"
+      >
+        <DashboardCard
+          card={{ title: "Total users", value: users.length }}
+        ></DashboardCard>
+        <DashboardCard
+          card={{ title: "Total profit", value: totalProfit }}
+        ></DashboardCard>
+        <DashboardCard
+          card={{ title: "Total products", value: products.length }}
+        ></DashboardCard>
+        <DashboardCard
+          card={{ title: "Total orders", value: orders.length }}
+        ></DashboardCard>
+      </Grid>
+    )
   );
 };
 
