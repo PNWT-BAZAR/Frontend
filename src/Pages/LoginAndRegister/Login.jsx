@@ -30,6 +30,8 @@ const schema = yup.object().shape({
 });
 
 const Login = ({ handleChange }) => {
+  const [open, setOpen] = useState();
+
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -56,17 +58,28 @@ const Login = ({ handleChange }) => {
   const submitHandler = async (data) => {
     //encrypt and login method
     const result = await API.post("/identity/users/login", data);
+    console.log(result);
+    if(!result){
+      console.log("GRESKA");
+      handleClickOpen();
+      return;
+    }
     const decodedJwt = jwt(result?.headers?.authorization);
     const userRole = decodedJwt?.authorities[0];
-    // if (result?.headers?.authorization === undefined) {
-    //   handleClickOpen();
-    // }
     localStorage.setItem("access_token", result?.headers?.authorization);
     if (userRole === "ROLE_ADMIN") {
       window.location.href = "/admin";
     } else {
       window.location.href = "/";
     }
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -163,7 +176,7 @@ const Login = ({ handleChange }) => {
             Register now!
           </Link>
         </Typography>
-        {/* <Dialog
+        <Dialog
           open={open}
           onClose={handleClose}
           aria-labelledby="alert-dialog-title"
@@ -171,7 +184,7 @@ const Login = ({ handleChange }) => {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Incorrect username or password!
+              Incorrect username or password! Please try again.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -179,7 +192,7 @@ const Login = ({ handleChange }) => {
               OK
             </Button>
           </DialogActions>
-        </Dialog> */}
+        </Dialog>
       </Box>
     </FormProvider>
   );
