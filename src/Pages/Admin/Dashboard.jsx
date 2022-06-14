@@ -1,16 +1,22 @@
-import { Grid } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 import { dummyDashboardCards } from "../../sampleItems/dummyDashboardCards";
 import DashboardCard from "./DashboardCard";
 import { useState, useEffect } from "react";
 import API from "../../api/API";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 const Dashboard = () => {
-  const [users, setUsers] = useState([]);
-  const [totalProfit, setTotalProfit] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  const [users, setUsers] = useState();
+  const [totalProfit, setTotalProfit] = useState();
+  const [products, setProducts] = useState();
+  const [orders, setOrders] = useState();
 
   useEffect(() => {
+    setLoading(true);
+
     const fetchAllUsers = async () => {
       const result = await API.get("identity/users", {});
       setUsers(result?.data?.objectsList);
@@ -18,7 +24,11 @@ const Dashboard = () => {
     fetchAllUsers();
 
     const fetchTotalProfit = async () => {
-      const result = await API.get("order/orders/price", {});
+      const result = await API.get("order/orders/price", {})
+      if(result){
+        console.log("Mounted");
+        setLoading(false);
+      }
       console.log(result?.data);
       setTotalProfit(result?.data);
     };
@@ -32,14 +42,14 @@ const Dashboard = () => {
 
     const fetchOrders = async () => {
       const result = await API.get("order/orders", {});
-      console.log(result?.data?.objectsList.length)
-      setOrders(result?.data?.objectsList.length);
+      console.log(result?.data?.objectsList)
+      setOrders(result?.data?.objectsList);
     };
     fetchOrders();
   }, []);
 
   return (
-    users && totalProfit && products && orders && (
+    
       <Grid
         container
         direction="row"
@@ -47,20 +57,32 @@ const Dashboard = () => {
         display={"flex"}
         justifyContent="space-evenly"
       >
-        <DashboardCard
-          card={{ title: "Total users", value: users.length }}
-        ></DashboardCard>
-        <DashboardCard
-          card={{ title: "Total profit", value: totalProfit }}
-        ></DashboardCard>
-        <DashboardCard
-          card={{ title: "Total products", value: products.length }}
-        ></DashboardCard>
-        <DashboardCard
-          card={{ title: "Total orders", value: orders.length }}
-        ></DashboardCard>
+        {loading && (
+          <Box>
+          <CircularProgress style={{ margin: "20px" }} />
+          <Typography sx={{ fontWeight: "bold", display:"flex", justifyContent:"center", }}>Fetching data, please wait!</Typography>
+          </Box>
+        )}
+
+        {users && totalProfit && products && orders && (
+          <Box>
+          <DashboardCard
+            card={{ title: "Total users", value: users.length }}
+          ></DashboardCard>
+          <DashboardCard
+            card={{ title: "Total profit", value: totalProfit }}
+          ></DashboardCard>
+          <DashboardCard
+            card={{ title: "Total products", value: products.length }}
+          ></DashboardCard>
+          <DashboardCard
+            card={{ title: "Total orders", value: orders.length }}
+          ></DashboardCard>
+
+          </Box>
+        
+        )}
       </Grid>
-    )
   );
 };
 
