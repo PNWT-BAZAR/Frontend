@@ -12,6 +12,7 @@ import { dummyOrders } from "../../sampleItems/dummyOrders";
 
 const OrdersList = () => {
   let navigate = useNavigate();
+  const [loading, setLoading] = useState();
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [orderPrices, setOrderPrices] = useState([]);
@@ -32,6 +33,7 @@ const OrdersList = () => {
   // }
 
   useEffect(() => {
+    setLoading(true);
     const fetchOrders = async () => {
       const result = await API.get("order/orders", {});
       setOrders(result?.data?.objectsList);
@@ -43,6 +45,7 @@ const OrdersList = () => {
       const result = await API.get("order/orderItems", {});
       setOrderItems(result?.data?.objectsList);
       console.log("orderItemsi", result?.data?.objectsList);
+      setLoading(false);
     };
     fetchOrderItems();
 
@@ -74,6 +77,7 @@ const OrdersList = () => {
           autoPageSize={true}
           rowSelection={"single"}
           onRowClick={handleRowClick}
+          loading={loading}
         />
       </Box>
     </Box>

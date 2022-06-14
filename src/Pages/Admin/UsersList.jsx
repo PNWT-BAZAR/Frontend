@@ -16,17 +16,25 @@ const columns = [
 ];
 
 const UsersList = () => {
+  const [loading, setLoading] = useState();
   const [users, setUsers] = useState([]);
   useEffect(() => {
+    setLoading(true);
     const fetchUsers = async () => {
       const result = await API.get("identity/users", {});
       setUsers(result?.data?.objectsList);
+      setLoading(false);
     };
     fetchUsers();
   }, []);
   return (
     <div style={{ height: "90vh", width: "100%" }}>
-      <DataGrid rows={users} columns={columns} autoPageSize={true} />
+      <DataGrid 
+      rows={users} 
+      columns={columns} 
+      autoPageSize={true} 
+      loading={loading}
+      />
     </div>
   );
 };

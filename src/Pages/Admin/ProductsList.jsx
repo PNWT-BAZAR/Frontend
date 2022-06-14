@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import API from "../../api/API";
 
 const ProductsList = () => {
+  const [loading, setLoading] = useState();
   let navigate = useNavigate();
 
   function getCategory(products) {
@@ -16,10 +17,12 @@ const ProductsList = () => {
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
+    setLoading(true);
     const fetchProducts = async () => {
       const result = await API.get("inventory/products", {});
       setProducts(result?.data?.objectsList);
       console.log("proiyvodi", products);
+      setLoading(false);
     };
     fetchProducts();
   }, []);
@@ -55,6 +58,7 @@ const ProductsList = () => {
           autoPageSize={true}
           rowSelection={"single"}
           onRowClick={handleRowClick}
+          loading={loading}
         />
       </Box>
       <Box

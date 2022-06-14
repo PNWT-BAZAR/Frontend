@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import React from "react";
 import { dummyProducts } from "../../sampleItems/dummyProducts";
 import { ProductCard } from "./ProductCard";
@@ -10,7 +10,9 @@ const BestProductsContainer = () => {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState();
   useEffect(() => {
+    setLoading(true);
     const fetchProducts = async () => {
       const result = await API.get("/inventory/products");
       const array = [];
@@ -29,6 +31,7 @@ const BestProductsContainer = () => {
           });
         }
       });
+      setLoading(false);
       setProducts(array);
     };
     fetchProducts();
@@ -48,15 +51,24 @@ const BestProductsContainer = () => {
         margin: "50px 0px 0px 0px",
       }}
     >
-      {prodDescending?.slice(0, 7).map((prod) => {
-        return (
-          <ProductCard
-            key={prod?.id}
-            product={prod}
-            onClick={() => navigate(`/product/${prod.id}`)}
-          />
-        );
-      })}
+      {loading && (
+        <Box>
+        <CircularProgress style={{ margin: "20px" }} />
+        <Typography sx={{ fontWeight: "bold", display:"flex", justifyContent:"center", }}>Fetching our best products, please wait!</Typography>
+        </Box>
+      )}
+
+      { products && (
+        prodDescending?.slice(0, 7).map((prod) => {
+          return (
+            <ProductCard
+              key={prod?.id}
+              product={prod}
+              onClick={() => navigate(`/product/${prod.id}`)}
+            />
+          );
+        })
+      )}
     </Box>
   );
 };
