@@ -87,7 +87,14 @@ export default function CategoryView(props) {
           alignSelf="center"
           marginTop={5}
         >
-          {category?.name}
+          <StyledLink
+            to={{
+              pathname: `/category`,
+              search: "?categoryId=" + categoryId,
+            }}
+          >
+            {category?.name}
+          </StyledLink>
         </Typography>
         <Divider />
         <List>
