@@ -1,4 +1,11 @@
-import { Box } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+} from "@mui/material";
 import * as yup from "yup";
 import { useState, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,13 +20,26 @@ const schema = yup.object().shape({
 });
 
 const AddImage = () => {
-  const [productImages, setProductImages] = useState([]);
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [product, setProduct] = useState();
+  const productId = window.location.pathname.split("/").at(-1);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const result = await API.get("inventory/products/" + productId);
+      setProduct(result?.data?.object);
+    };
+    fetchProduct();
+  }, []);
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      url: productImages?.url ?? "",
-    },
   });
 
   const {
@@ -27,12 +47,13 @@ const AddImage = () => {
     formState: { errors },
   } = methods;
 
-  const submitHandler = async (data) => {
-    // const productImg = {
-    //     url: data?.url,
-    //     product:
-    // }
-    await API.post("/inventory/productImages", data);
+  const submitHandler = (data) => {
+    const productImg = {
+      url: data?.url,
+      product: product,
+    };
+    API.post("/inventory/productImages", productImg);
+    handleClickOpen();
   };
 
   return (
@@ -65,7 +86,27 @@ const AddImage = () => {
               ),
             }}
           />
-          <AddCircleOutlineOutlinedIcon />
+          <AddCircleOutlineOutlinedIcon
+            sx={{ cursor: "pointer" }}
+            onClick={handleSubmit((data) => submitHandler(data))}
+          />
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Product image successfully added!
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} autoFocus>
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       </form>
     </FormProvider>

@@ -472,9 +472,12 @@ const AddProduct = (props) => {
                 Cancel
               </Button>
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <AddImage />
-            </Box>
+            {product && (
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <AddImage />
+              </Box>
+            )}
+
             <Dialog
               open={open}
               onClose={handleClose}
