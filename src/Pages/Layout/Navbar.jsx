@@ -219,7 +219,7 @@ const Navbar = () => {
           <Right>
             {username ? (
               <React.Fragment>
-                <div>WELCOME {username} </div>
+                <div>Welcome {username} </div>
                 <StyledLink to="/cart">
                   <ShoppingCartOutlinedIcon />
                 </StyledLink>

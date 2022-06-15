@@ -11,6 +11,7 @@ const BestProductsContainer = () => {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState();
+  
   useEffect(() => {
     setLoading(true);
     const fetchProducts = async () => {
@@ -52,29 +53,13 @@ const BestProductsContainer = () => {
       }}
     >
       {loading && (
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress style={{ margin: "20px" }} />
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            Fetching our best products, please wait!
-          </Typography>
+        <Box>
+        <CircularProgress style={{ margin: "20px" }} />
+        <Typography sx={{ fontWeight: "bold", display:"flex", justifyContent:"center", }}>Fetching our best products, please wait!</Typography>
         </Box>
       )}
 
-      {products &&
+      { products && (
         prodDescending?.slice(0, 7).map((prod) => {
           return (
             <ProductCard
@@ -83,7 +68,8 @@ const BestProductsContainer = () => {
               onClick={() => navigate(`/product/${prod.id}`)}
             />
           );
-        })}
+        })
+      )}
     </Box>
   );
 };

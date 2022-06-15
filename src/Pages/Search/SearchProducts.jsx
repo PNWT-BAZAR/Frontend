@@ -34,7 +34,7 @@ const SearchProducts = (props) => {
       setProducts(array);
     };
     fetchSearchedProducts();
-  }, []);
+  }, [searchInput]);
 
   return (
     <Box

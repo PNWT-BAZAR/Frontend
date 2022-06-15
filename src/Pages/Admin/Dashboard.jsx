@@ -20,23 +20,22 @@ const Dashboard = () => {
     const fetchAllUsers = async () => {
       const result = await API.get("identity/users", {});
       setUsers(result?.data?.objectsList);
+      setLoading(false);
     };
     fetchAllUsers();
 
     const fetchTotalProfit = async () => {
       const result = await API.get("order/orders/price", {})
-      if(result){
-        console.log("Mounted");
-        setLoading(false);
-      }
       console.log(result?.data);
       setTotalProfit(result?.data);
+      setLoading(false);
     };
     fetchTotalProfit();
 
     const fetchProducts = async () => {
       const result = await API.get("inventory/products", {});
       setProducts(result?.data?.objectsList);
+      setLoading(false);
     };
     fetchProducts();
 
@@ -44,6 +43,7 @@ const Dashboard = () => {
       const result = await API.get("order/orders", {});
       console.log(result?.data?.objectsList)
       setOrders(result?.data?.objectsList);
+      setLoading(false);
     };
     fetchOrders();
   }, []);
@@ -64,24 +64,33 @@ const Dashboard = () => {
           </Box>
         )}
 
-        {users && totalProfit && products && orders && (
           <Box>
-          <DashboardCard
-            card={{ title: "Total users", value: users.length }}
-          ></DashboardCard>
-          <DashboardCard
-            card={{ title: "Total profit", value: totalProfit }}
-          ></DashboardCard>
-          <DashboardCard
-            card={{ title: "Total products", value: products.length }}
-          ></DashboardCard>
-          <DashboardCard
-            card={{ title: "Total orders", value: orders.length }}
-          ></DashboardCard>
+            {users && (
+            <DashboardCard
+              card={{ title: "Total users", value: users.length }}
+            ></DashboardCard>
+            )}
+            
+            {totalProfit && (
+              <DashboardCard
+                card={{ title: "Total profit", value: totalProfit }}
+              ></DashboardCard>
+            )}
 
+
+            {products && (
+              <DashboardCard
+                card={{ title: "Total products", value: products.length }}
+              ></DashboardCard>
+            )}
+            
+            {orders && (
+              <DashboardCard
+                card={{ title: "Total orders", value: orders.length }}
+              ></DashboardCard>
+            )}
           </Box>
         
-        )}
       </Grid>
   );
 };
