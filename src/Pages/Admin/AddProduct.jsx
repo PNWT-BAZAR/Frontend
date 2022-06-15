@@ -2,17 +2,13 @@ import * as React from "react";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { dummyCategories } from "../../sampleItems/dummyCategories";
-import { dummySubcategories } from "../../sampleItems/dummySubcategories";
-import { dummyProducts } from "../../sampleItems/dummyProducts";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import API from "../../api/API";
 import FormInputField from "../../shared/controls/FormInput/FormInputField";
 import FormSelect from "../../shared/controls/FormSelect/FormSelectField";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useLocation } from "react-router-dom";
-import { COLORS } from "../values/colors";
+import AddImage from "./AddImage";
 
 import {
   Box,
@@ -476,7 +472,9 @@ const AddProduct = (props) => {
                 Cancel
               </Button>
             </Box>
-
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <AddImage />
+            </Box>
             <Dialog
               open={open}
               onClose={handleClose}

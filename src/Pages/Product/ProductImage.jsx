@@ -24,6 +24,7 @@ const ProductImage = (props) => {
         }}
         component="img"
         image={productImg}
+        alt="Product image unavailable!"
       ></CardMedia>
     </Paper>
   );
