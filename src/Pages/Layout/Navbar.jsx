@@ -10,10 +10,9 @@ import API from "../../api/API";
 import { useData } from "../../shared/contexts/MenuItemContext";
 import Dropdown from "./Dropdown";
 import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  useEffect(() => {}, []);
-
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -39,6 +38,7 @@ const Navbar = () => {
     fetchCategories();
   }, []);
 
+  const [searchInput, setSearchInput] = useState();
   // useEffect(() => {
   //   if (searchInput === undefined || searchInput === "") {
   //     // setValues({ ...data, showSearchDropdown: false });
@@ -204,12 +204,16 @@ const Navbar = () => {
           <Center>
             <SearchContainer>
               <Input
-                // onChange={(e) => setSearchInput(e.target.value)}
+                onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="What are you looking for?"
+                value={searchInput}
               ></Input>
-              <SearchIcon
-                style={{ color: "gray", fontSize: 16, cursor: "pointer" }}
-              ></SearchIcon>
+              <StyledLink to={`/search/${searchInput}`}>
+                <SearchIcon
+                  style={{ color: "gray", fontSize: 16, cursor: "pointer" }}
+                  onClick={() => setSearchInput("")}
+                ></SearchIcon>
+              </StyledLink>
             </SearchContainer>
           </Center>
           <Right>

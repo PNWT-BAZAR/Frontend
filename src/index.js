@@ -20,6 +20,7 @@ import CategoriesList from "./Pages/Admin/CategoriesList";
 import SubcategoriesList from "./Pages/Admin/SubcategoriesList";
 import OrderView from "./Pages/Admin/OrderView";
 import NewLogin from "./Pages/LoginAndRegister/NewLogin";
+import SearchProducts from "./Pages/Search/SearchProducts";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -44,6 +45,14 @@ root.render(
             }
           />
           <Route
+            path="/search/:searchInput"
+            element={
+              <Layout>
+                <SearchProducts />
+              </Layout>
+            }
+          />
+          <Route
             path="/form"
             element={
               <Layout>
@@ -55,7 +64,7 @@ root.render(
             path="/category"
             element={
               // <Layout>
-              <CategoryView/>
+              <CategoryView />
               // </Layout>
             }
           />
