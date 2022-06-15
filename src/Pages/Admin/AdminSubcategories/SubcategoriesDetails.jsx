@@ -41,7 +41,7 @@ export default function SubcategoriesDetails(props) {
   const submitHandler = async (data) => {
     data.id = itemDetails.id;
     console.log("category to update", data);
-    await API.put("/inventory/categories", data);
+    await API.put("/inventory/subcategories", data);
 
     props.fetchFilteredData(null);
     goBackHandler();

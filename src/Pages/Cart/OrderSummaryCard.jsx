@@ -107,11 +107,11 @@ const OrderSummaryCard = (props) => {
     >
       <CardHeader title="Your order" />
       <CardContent sx={{ flex: "1 0 auto" }}>
-        Order price: <b>EUR</b> {props.price}
+        Order price: <b>EUR</b> {props?.price.toFixed(2)}
         <br />
         Shipping: <b>EUR</b> {shipping}
         <br /> <br />
-        <b> Total price: EUR {props.price + shipping}</b>
+        <b> Total price: EUR {(props?.price + shipping).toFixed(2)}</b>
         <br /> <br />
         Estimated delivery: {dateStart} - {dateEnd}
         <br />

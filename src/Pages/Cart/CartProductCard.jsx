@@ -11,18 +11,36 @@ import React, { useState, useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import API from "../../api/API";
+
 
 const CartProductCard = (props) => {
   const { product, onQuantityChanged, onDelete } = props;
   //const [quantity, setQuantity] = useState(product.quantity);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [productImage, setProductImage] = useState();
   useEffect(() => {
     if (product.quantity > 0) {
       setTotalPrice((product.quantity * product.price).toFixed(2));
     } else if (product.quantity === 0) {
       setTotalPrice(0);
     }
+
   }, [product.quantity]);
+
+  useEffect(() => {
+    const fetchProductImage = async () => {
+      const result1 = await API.get(
+        "/inventory/productImages/product/" + product?.id
+      );
+      let productImage = result1?.data?.objectsList[0];
+      setProductImage(productImage?.url);
+    };
+    fetchProductImage();
+    console.log(product);
+  });
+
+  
 
   return (
     <Card
@@ -35,11 +53,6 @@ const CartProductCard = (props) => {
       }}
     >
       <CardHeader
-        action={
-          <IconButton aria-label="delete" onClick={onDelete}>
-            <DeleteOutlinedIcon />
-          </IconButton>
-        }
         title={props.product.name}
       />
       <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -52,7 +65,7 @@ const CartProductCard = (props) => {
             resizeMode: "contain",
           }}
           component="img"
-          image={product?.url}
+          image={productImage}
         />
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ flex: "1 0 auto" }}>

@@ -1,4 +1,7 @@
-import { Grid, Box, InputAdornment, Button } from "@mui/material";
+import { Grid, Box, InputAdornment, Button, Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText, } from "@mui/material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -12,6 +15,7 @@ import API from "../../api/API";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { COLORS } from "../values/colors";
+import { useState } from "react";
 
 const schema = yup.object().shape({
   firstName: yup.string().required("First name is required!"),
@@ -38,6 +42,8 @@ const schema = yup.object().shape({
 });
 
 const Register = ({ handleChange }) => {
+  const [open, setOpen] = useState();
+
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -71,9 +77,19 @@ const Register = ({ handleChange }) => {
     console.log("USER", user);
     const result = await API.post("/identity/users/signup", user);
     console.log(result?.data?.object);
+    
     if (result?.data?.object != null) {
-      handleChange("event", 0);
+      handleClickOpen();
     }
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    handleChange("event", 0);
   };
 
   return (
@@ -263,6 +279,24 @@ const Register = ({ handleChange }) => {
           Register
         </Button>
       </Box>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Account successfully created
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </FormProvider>
   );
 };

@@ -146,6 +146,7 @@ const Navbar = () => {
     display: flex;
     padding-right: 30px;
     justify-content: flex-end;
+    color: black;
   `;
 
   const CategoriesNavigation = styled.div`
